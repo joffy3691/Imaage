@@ -2,7 +2,7 @@ from PIL import Image
 from matplotlib import pyplot as plt
 import imagehash
 
-im = Image.open('abstact-thinking2.jpg')
+im = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/Microsoft_Excel_2013_logo_with_background.png')
 hash = imagehash.phash(im)
 print(hash)
 pix = im.load()
