@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
-
+import hashlib
 my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/baboon.png')
 # cv2_imshow(my_img)
 plt.imshow(my_img)
@@ -77,10 +77,10 @@ def generatePrimeNumber(length):
     return A
 
 
-length = 20
+length = 10
 P = generatePrimeNumber(length)
 Q = generatePrimeNumber(length)
-#poer doesnt work if P and Q are equal
+
 print(P)
 print(Q)
 
@@ -145,19 +145,62 @@ def gcdExtended(E, eulerTotient):
 
 
 D = gcdExtended(E, eulerTotient)
+print("D ")
 print(D)
 
 row, col = my_img.size[0], my_img.size[1]
 enc = [[0 for x in range(3000)] for y in range(3000)]
 
+key = input()
+size = my_img.size
+mod = min(size)
+enc_key = key
+key = hashlib.md5(key.encode()).hexdigest()
+print(key)
+key_length = len(key)
+key_array = []
+key_sum = sum(key_array)
+
+for key in key:
+    key_array.append(ord(key) % mod)
+res = []
+for i in key_array:
+    if i not in res:
+        res.append(i)
+
+print(res)
+for q in range(size[0]):
+    for r in range(size[1]):
+        reds = pix[q, r][0] ^pix[(q-1)%size[0],(r-1)%size[1]][0]
+        greens = pix[q, r][1]^pix[(q-5)%size[0],(r-5)%size[1]][1]
+        blues = pix[q, r][2] ^ pix[(q-3)%size[0],(r-3)%size[1]][2]
+        pix[q, r] = (reds, greens, blues)
+        reds = pix[q, r][0] ^ (res[q*r%len(res)] ** 2 % 255)
+        greens = pix[q, r][1] ^ (res[q*r%len(res)] ** 2 % 255)
+        blues = pix[q, r][2] ^ (res[q*r%len(res)] ** 2 % 255)
+        pix[q, r] = (reds, greens, blues)
+plt.imshow(my_img)
+plt.show()
+
+img = cv2.imread('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/baboon.png', 1)
+histogram_blue = cv2.calcHist([img], [0], None, [256], [0, 256])
+plt.plot(histogram_blue, color='blue')
+histogram_green = cv2.calcHist([img], [1], None, [256], [0, 256])
+plt.plot(histogram_green, color='green')
+histogram_red = cv2.calcHist([img], [2], None, [256], [0, 256])
+plt.plot(histogram_red, color='red')
+plt.title('Intensity Histogram - Logistic Encrypted Image', fontsize=20)
+plt.xlabel('pixel values', fontsize=16)
+plt.ylabel('pixel count', fontsize=16)
+plt.show()
 # Step 5: Encryption
 size = my_img.size
 for i in range(row):
     for j in range(col):
         r, g, b = pix[i, j]
-        C1 = pow(r, E, N)
-        C2 = pow(g, E, N)
-        C3 = pow(b, E, N)
+        C1 = power(r, E, N)
+        C2 = power(g, E, N)
+        C3 = power(b, E, N)
         enc[i][j] = [C1, C2, C3]
         C1 = C1 % 256
         C2 = C2 % 256
@@ -166,15 +209,54 @@ for i in range(row):
 
 plt.imshow(my_img)
 plt.show()
-
+my_img.save('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/babon.png')
+img = cv2.imread('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/babon.png', 1)
+histogram_blue = cv2.calcHist([img], [0], None, [256], [0, 256])
+plt.plot(histogram_blue, color='blue')
+histogram_green = cv2.calcHist([img], [1], None, [256], [0, 256])
+plt.plot(histogram_green, color='green')
+histogram_red = cv2.calcHist([img], [2], None, [256], [0, 256])
+plt.plot(histogram_red, color='red')
+plt.title('Intensity Histogram - Logistic Encrypted Image', fontsize=20)
+plt.xlabel('pixel values', fontsize=16)
+plt.ylabel('pixel count', fontsize=16)
+plt.show()
+D = int(input())
 # Step 6: Decryption
+
 for i in range(row):
     for j in range(col):
         r, g, b = enc[i][j]
-        M1 = pow(r, D, N)
-        M2 = pow(g, D, N)
-        M3 = pow(b, D, N)
+        M1 = power(r, D, N)
+        M2 = power(g, D, N)
+        M3 = power(b, D, N)
         pix[i, j] = (M1, M2, M3)
+
+plt.imshow(my_img)
+plt.show()
+
+key = input()
+key = hashlib.md5(key.encode()).hexdigest()
+print(key)
+key_length = len(key)
+key_array = []
+key_sum = sum(key_array)
+for key in key:
+    key_array.append(ord(key) % mod)
+res = []
+for i in key_array:
+    if i not in res:
+        res.append(i)
+for q in range(size[0] - 1, -1, -1):
+    for r in range(size[1] - 1, -1, -1):
+        reds = pix[q, r][0] ^pix[(q-1)%size[0],(r-1)%size[1]][0]
+        greens = pix[q, r][1]^pix[(q-5)%size[0],(r-5)%size[1]][1]
+        blues = pix[q, r][2] ^ pix[(q-3)%size[0],(r-3)%size[1]][2]
+        pix[q, r] = (reds, greens, blues)
+        reds = pix[q, r][0] ^ (res[q*r%len(res)] ** 2 % 255)
+        greens = pix[q, r][1] ^ (res[q*r%len(res)] ** 2 % 255)
+        blues = pix[q, r][2] ^ (res[q*r%len(res)] ** 2 % 255)
+        pix[q, r] = (reds, greens, blues)
 
 plt.imshow(my_img)
 plt.show()

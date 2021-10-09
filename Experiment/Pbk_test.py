@@ -1,8 +1,8 @@
-import cv2
-import numpy as np
+import os, binascii
+from backports.pbkdf2 import pbkdf2_hmac
 import matplotlib.pyplot as plt
 from PIL import Image
-
+import hashlib
 my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/baboon.png')
 # cv2_imshow(my_img)
 plt.imshow(my_img)
@@ -80,7 +80,9 @@ def generatePrimeNumber(length):
 length = 20
 P = generatePrimeNumber(length)
 Q = generatePrimeNumber(length)
-#poer doesnt work if P and Q are equal
+while(Q==P):
+    Q = generatePrimeNumber(length)
+
 print(P)
 print(Q)
 
@@ -145,10 +147,48 @@ def gcdExtended(E, eulerTotient):
 
 
 D = gcdExtended(E, eulerTotient)
+print("D ")
 print(D)
 
 row, col = my_img.size[0], my_img.size[1]
 enc = [[0 for x in range(3000)] for y in range(3000)]
+
+key = input()
+size = my_img.size
+mod = min(size)
+print(mod)
+enc_key = key
+salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
+passwd = enc_key.encode("utf8")
+key = pbkdf2_hmac("sha256", passwd, salt, 50000, 2048)
+print("Derived key:", binascii.hexlify(key))
+key=binascii.hexlify(key)
+key=str(key, 'UTF-8')
+print(key);
+key_length = len(key)
+key_array = []
+key_sum = sum(key_array)
+
+for key in key:
+    key_array.append(ord(key) % mod)
+print(key_array)
+res = []
+#for i in key_array:
+#    if i not in res:
+#        res.append(i)
+
+for q in range(size[0]):
+    for r in range(size[1]):
+        reds = pix[q, r][0] ^pix[(q-1)%size[0],(r-1)%size[1]][0]
+        greens = pix[q, r][1]^pix[(q-5)%size[0],(r-5)%size[1]][1]
+        blues = pix[q, r][2] ^ pix[(q-3)%size[0],(r-3)%size[1]][2]
+        pix[q, r] = (reds, greens, blues)
+        reds = pix[q, r][0] ^ (key_array[q*r%len(key_array)] ** 2 % 255)
+        greens = pix[q, r][1] ^ (key_array[q*r%len(key_array)] ** 2 % 255)
+        blues = pix[q, r][2] ^ (key_array[q*r%len(key_array)] ** 2 % 255)
+        pix[q, r] = (reds, greens, blues)
+plt.imshow(my_img)
+plt.show()
 
 # Step 5: Encryption
 size = my_img.size
@@ -166,15 +206,51 @@ for i in range(row):
 
 plt.imshow(my_img)
 plt.show()
-
+D = int(input())
 # Step 6: Decryption
+
 for i in range(row):
     for j in range(col):
         r, g, b = enc[i][j]
         M1 = pow(r, D, N)
         M2 = pow(g, D, N)
         M3 = pow(b, D, N)
+        M1 = M1 % 256
+        M2 = M2 % 256
+        M3 = M3 % 256
         pix[i, j] = (M1, M2, M3)
+
+plt.imshow(my_img)
+plt.show()
+
+key = input()
+enc_key = key
+salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
+passwd = enc_key.encode("utf8")
+key = pbkdf2_hmac("sha256", passwd, salt, 50000, 2048)
+print("Derived key:", binascii.hexlify(key))
+key=binascii.hexlify(key)
+key=str(key, 'UTF-8')
+print(key);
+key_length = len(key)
+key_array = []
+key_sum = sum(key_array)
+for key in key:
+    key_array.append(ord(key) % mod)
+res = []
+for i in key_array:
+    if i not in res:
+        res.append(i)
+for q in range(size[0] - 1, -1, -1):
+    for r in range(size[1] - 1, -1, -1):
+        reds = pix[q, r][0] ^pix[(q-1)%size[0],(r-1)%size[1]][0]
+        greens = pix[q, r][1]^pix[(q-5)%size[0],(r-5)%size[1]][1]
+        blues = pix[q, r][2] ^ pix[(q-3)%size[0],(r-3)%size[1]][2]
+        pix[q, r] = (reds, greens, blues)
+        reds = pix[q, r][0] ^ (key_array[q*r%len(key_array)] ** 2 % 255)
+        greens = pix[q, r][1] ^ (key_array[q*r%len(key_array)] ** 2 % 255)
+        blues = pix[q, r][2] ^ (key_array[q*r%len(key_array)] ** 2 % 255)
+        pix[q, r] = (reds, greens, blues)
 
 plt.imshow(my_img)
 plt.show()

@@ -117,12 +117,13 @@ key = 20
 # + id="AFOv1GEJ7H2n" colab_type="code" outputId="40b86a44-3e99-442d-9e7e-9d7e79df459f" colab={"base_uri": "https://localhost:8080/", "height": 267}
 img = cv2.imread(image + ext)
 imshow(img)
-
+plt.show()
 # + id="dEEaCUCb4Ns4" colab_type="code" outputId="fb1af4ba-69be-4f7f-d80d-0a62dc8990f1" colab={"base_uri": "https://localhost:8080/", "height": 267}
 ArnoldCatEncryptionIm = ArnoldCatEncryption(image + ext, key)
 imshow(ArnoldCatEncryptionIm)
-
+plt.show()
 key=21
 # + id="a1jyAbjR3xOG" colab_type="code" outputId="02e9d474-c8cd-4ab9-cde8-ac444d4d2c11" colab={"base_uri": "https://localhost:8080/", "height": 267}
 ArnoldCatDecryptionIm = ArnoldCatDecryption(image + "_ArnoldcatEnc.png", key)
 imshow(ArnoldCatDecryptionIm)
+plt.show()
