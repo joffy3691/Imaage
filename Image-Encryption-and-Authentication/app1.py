@@ -81,25 +81,39 @@ while True:
             encrypt.encrypt("crop_{0}.jpeg", values['key'], values['mode'])
             cdfg=cv2.imread("crop_{0}.jpeg")
             im[startY:endY, startX:endX] = cdfg
+            exif_dict["Exif"][piexif.ExifIFD.UserComment] = piexif.helper.UserComment.dump(
+                json.dumps(userdata),
+                encoding="unicode"
+            )
+            # insert mutated data (serialised into JSON) into image
+            piexif.insert(
+                piexif.dump(exif_dict),
+                filename
+            )
             cv2.imwrite("garbage.jpeg", im)
+
         toc = time.perf_counter()
         print(f"Downloaded the tutorial in {toc - tic:0.4f} seconds")
         window.refresh()
     if event == 'Decrypt' and values['key']:
         print('Starting decryption')
         im = cv2.imread("garbage.jpeg")
-        filename = "garbage.jpeg"
+        filename = values['-FILE LIST-'][0]
         exif_dict = piexif.load(filename)
         # Extract the serialized data
         user_comment = piexif.helper.UserComment.load(exif_dict["Exif"][piexif.ExifIFD.UserComment])
         # Deserialize
         d = json.loads(user_comment)
         x1 = d.split()
+        print(x1[1])
+        print(x1[3])
+        print(x1[0])
+        print(x1[2])
         crop = im[int(x1[1]):int(x1[3]), int(x1[0]):int(x1[2])]
         cv2.imwrite("crop_{1}.jpeg", crop)
         decrypt.decrypt("crop_{1}.jpeg",values['key'],values['mode'])
         cdf = cv2.imread("crop_{1}.jpeg")
-        im[startY:endY, startX:endX] = cdf
+        im[int(x1[1]):int(x1[3]), int(x1[0]):int(x1[2])] = cdf
         plt.imshow(im)
         plt.show()
         cv2.imwrite("garbage1.jpeg", im)
