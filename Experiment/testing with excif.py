@@ -10,7 +10,7 @@ my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-
 # cv2_imshow(my_img)
 plt.imshow(my_img)
 pix = my_img.load()
-filename="C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/asds.jpg"
+filename="C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/PROFILE.jpeg"
 exif_dict = piexif.load(filename)
 # RSA
 
@@ -216,8 +216,6 @@ for i in range(row):
         C3 = C3 % 256
         pix[i, j] = (C1, C2, C3)
 
-plt.imshow(my_img)
-plt.show()
 exif_dict["Exif"][piexif.ExifIFD.UserComment] = piexif.helper.UserComment.dump(
     json.dumps(userdata),
     encoding="unicode"
@@ -227,6 +225,9 @@ piexif.insert(
     piexif.dump(exif_dict),
     filename
 )
+plt.imshow(my_img)
+plt.show()
+
 D = int(input())
 # Step 6: Decryption
 

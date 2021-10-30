@@ -2,7 +2,7 @@ from PIL import Image
 from matplotlib import pyplot as plt
 import imagehash
 
-im = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/Microsoft_Excel_2013_logo_with_background.png')
+im = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/PROFILE.jpeg')
 hash = imagehash.phash(im)
 print(hash)
 pix = im.load()
@@ -47,4 +47,4 @@ for k in range (2,int(mod)):
 
 plt.imshow(im)
 plt.show()
-im.save('output.png') # Save the modified pixels as .png
+im.save('output.jpeg') # Save the modified pixels as .png

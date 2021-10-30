@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import cv2
 import imagehash
 
-im = Image.open('output.png')
+im = Image.open('output.jpeg')
 hash = imagehash.phash(im)
 print(hash)
 pix = im.load()
