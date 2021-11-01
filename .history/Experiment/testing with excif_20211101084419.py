@@ -6,13 +6,11 @@ import json
 import piexif
 import piexif.helper
 import hashlib
-import pandas as pd
-import numpy as np
-my_img = Image.open('/home/pratyush/Downloads/Imaage/Experiment/Photo_self.jpeg')
+my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/PROFILE.jpeg')
 # cv2_imshow(my_img)
 plt.imshow(my_img)
 pix = my_img.load()
-filename="/home/pratyush/Downloads/Imaage/Experiment/Photo_self.jpeg"
+filename="C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/PROFILE.jpeg"
 exif_dict = piexif.load(filename)
 # RSA
 
@@ -52,19 +50,19 @@ def MillerRabin(N, d):
 
 def is_prime(N, K):
     if N == 3 or N == 2:
-        return True
+        return True;
     if N <= 1 or N % 2 == 0:
-        return False
+        return False;
 
     # Find d such that d*(2^r)=X-1
     d = N - 1
     while d % 2 != 0:
-        d /= 2
+        d /= 2;
 
     for _ in range(K):
         if not MillerRabin(N, d):
-            return False
-    return True
+            return False;
+    return True;
 
 
 def generate_prime_candidate(length):
@@ -84,7 +82,7 @@ def generatePrimeNumber(length):
     return A
 
 
-length = 20
+length = 5
 P = generatePrimeNumber(length)
 Q = generatePrimeNumber(length)
 while(Q==P):
@@ -205,37 +203,28 @@ plt.show()
 # Step 5: Encryption
 size = my_img.size
 userdata=""
-column = []
 for i in range(row):
     for j in range(col):
         r, g, b = pix[i, j]
-        C1 = pow(r, E, N)
-        C2 = pow(g, E, N)
-        C3 = pow(b, E, N)
+        C1 = power(r, E, N)
+        C2 = power(g, E, N)
+        C3 = power(b, E, N)
         enc[i][j] = [C1, C2, C3]
-        column.append((C1,C2,C3))
-        #userdata=userdata+str(C1)+","+str(C2)+","+str(C3)+","
+        userdata=userdata+str(C1)+","+str(C2)+","+str(C3)+","
         C1 = C1 % 256
         C2 = C2 % 256
         C3 = C3 % 256
         pix[i, j] = (C1, C2, C3)
 
-print("Number of pixels = ", row * col)
-print("Number of rows = ", row)
-print("Number of col = ", col)
-
-df = pd.DataFrame(column, columns =['C1', 'C2', 'C3'])
-df.to_parquet('df.parquet.gzip',compression='gzip')
-data = pd.read_parquet('df.parquet.gzip')
-
-array = data.to_numpy()
-
-array = array.reshape(row, col, 3)
-
-"""for i in range(len(array)):
-    for j in range(col):
-        print(array[i][j])"""
-
+exif_dict["Exif"][piexif.ExifIFD.UserComment] = piexif.helper.UserComment.dump(
+    json.dumps(userdata),
+    encoding="unicode"
+)
+# insert mutated data (serialised into JSON) into image
+piexif.insert(
+    piexif.dump(exif_dict),
+    filename
+)
 plt.imshow(my_img)
 plt.show()
 
@@ -244,10 +233,10 @@ D = int(input())
 
 for i in range(row):
     for j in range(col):
-        r, g, b = array[i][j]
-        M1 = pow(int(r), D, N)
-        M2 = pow(int(g), D, N)
-        M3 = pow(int(b), D, N)
+        r, g, b = enc[i][j]
+        M1 = power(r, D, N)
+        M2 = power(g, D, N)
+        M3 = power(b, D, N)
         pix[i, j] = (M1, M2, M3)
 
 plt.imshow(my_img)
@@ -261,7 +250,7 @@ key = pbkdf2_hmac("sha256", passwd, salt, 50000, 2048)
 print("Derived key:", binascii.hexlify(key))
 key=binascii.hexlify(key)
 key=str(key, 'UTF-8')
-print(key)
+print(key);
 key_length = len(key)
 key_array = []
 key_arra = []

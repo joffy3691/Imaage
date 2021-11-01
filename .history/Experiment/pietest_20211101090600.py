@@ -41,30 +41,32 @@ for i in range (500):
     column.append((i,i,i))
 userdata6 = ' '.join([str(elem) for elem in column])
 
-tags = {}
+unique = []
 
-for i in range(5):
+for i in range(200):
     uniquecol = []
-    for j in range(800):
-        uniquecol.append((i,j,j))
-    userdata6 = ' '.join([str(elem) for elem in uniquecol])
-    tags[i] = userdata6
+    for j in range(200):
+        uniquecol.append((j,i,i))
+    unique[i].append(uniquecol)
 
+print(unique)
 
-# tags = {
-#     'url_current' : userdata,
-# 'url_current1'   : userdata1,
-# 'url_current2'   : userdata2,
-# 'url_current3'   : userdata3,
-# 'url_current4'   : userdata4,
-# 'url_current5'   : userdata5,
-# 'url_current6'   : userdata6,
-# }
+tags = {'url_current'   : userdata,
+'url_current1'   : userdata1,
+'url_current2'   : userdata2,
+'url_current3'   : userdata3,
+'url_current4'   : userdata4,
+'url_current5'   : userdata5,
+'url_current6'   : userdata6,
+        }
 
 data = pickle.dumps(tags)
 exif_ifd = {piexif.ExifIFD.MakerNote: data}
 
-exif_dict = {"0th": {}, "Exif": exif_ifd, "1st": exif_ifd, "thumbnail": None, "GPS": {}}
+
+exif_dict = {"0th": {}, "Exif": exif_ifd, "1st": {},
+             "thumbnail": None, "GPS": {}}
+
 
 exif_dat = piexif.dump(exif_dict)
 my_img.save('A.jpeg',  exif=exif_dat)

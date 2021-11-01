@@ -43,13 +43,14 @@ userdata6 = ' '.join([str(elem) for elem in column])
 
 tags = {}
 
-for i in range(5):
+for i in range(200):
     uniquecol = []
-    for j in range(800):
+    for j in range(200):
         uniquecol.append((i,j,j))
     userdata6 = ' '.join([str(elem) for elem in uniquecol])
     tags[i] = userdata6
 
+print(tags)
 
 # tags = {
 #     'url_current' : userdata,
@@ -64,7 +65,10 @@ for i in range(5):
 data = pickle.dumps(tags)
 exif_ifd = {piexif.ExifIFD.MakerNote: data}
 
-exif_dict = {"0th": {}, "Exif": exif_ifd, "1st": exif_ifd, "thumbnail": None, "GPS": {}}
+
+exif_dict = {"0th": {}, "Exif": exif_ifd, "1st": {},
+             "thumbnail": None, "GPS": {}}
+
 
 exif_dat = piexif.dump(exif_dict)
 my_img.save('A.jpeg',  exif=exif_dat)

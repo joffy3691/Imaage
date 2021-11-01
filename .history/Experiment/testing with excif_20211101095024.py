@@ -245,9 +245,9 @@ D = int(input())
 for i in range(row):
     for j in range(col):
         r, g, b = array[i][j]
-        M1 = pow(int(r), D, N)
-        M2 = pow(int(g), D, N)
-        M3 = pow(int(b), D, N)
+        M1 = pow(r, D, N)
+        M2 = pow(g, D, N)
+        M3 = pow(b, D, N)
         pix[i, j] = (M1, M2, M3)
 
 plt.imshow(my_img)

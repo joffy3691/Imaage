@@ -84,7 +84,7 @@ def generatePrimeNumber(length):
     return A
 
 
-length = 20
+length = 5
 P = generatePrimeNumber(length)
 Q = generatePrimeNumber(length)
 while(Q==P):
@@ -209,9 +209,9 @@ column = []
 for i in range(row):
     for j in range(col):
         r, g, b = pix[i, j]
-        C1 = pow(r, E, N)
-        C2 = pow(g, E, N)
-        C3 = pow(b, E, N)
+        C1 = power(r, E, N)
+        C2 = power(g, E, N)
+        C3 = power(b, E, N)
         enc[i][j] = [C1, C2, C3]
         column.append((C1,C2,C3))
         #userdata=userdata+str(C1)+","+str(C2)+","+str(C3)+","
@@ -245,9 +245,9 @@ D = int(input())
 for i in range(row):
     for j in range(col):
         r, g, b = array[i][j]
-        M1 = pow(int(r), D, N)
-        M2 = pow(int(g), D, N)
-        M3 = pow(int(b), D, N)
+        M1 = power(r, D, N)
+        M2 = power(g, D, N)
+        M3 = power(b, D, N)
         pix[i, j] = (M1, M2, M3)
 
 plt.imshow(my_img)

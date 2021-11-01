@@ -4,7 +4,7 @@ import piexif.helper
 
 # %% Write out exif data
 # load existing exif data from image
-filename="/home/pratyush/Downloads/Imaage/Experiment/Photo_self.jpeg"
+filename="C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/asds.jpg"
 exif_dict = piexif.load(filename)
 # insert custom data in usercomment field
 import array as arr
