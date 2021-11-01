@@ -10,7 +10,19 @@ exif_dict = piexif.load(filename)
 import array as arr
 
 # array with int type
-
+column=[(1,2,3),(3,4,5),(3,4,5),(3,4,5),(3,4,5),(3,4,5),(3,4,5),(3,4,5),(3,4,5)]
+userdata = ' '.join([str(elem) for elem in column])
+exif_dict["Exif"][piexif.ExifIFD.UserComment] = piexif.helper.UserComment.dump(
+    json.dumps(userdata),
+    encoding="unicode"
+)
+# insert mutated data (serialised into JSON) into image
+piexif.insert(
+    piexif.dump(exif_dict),
+    filename
+)
+column=[(1,2,3),(3,4,5),(3,4,5),(3,4,5),(3,4,5),(3,4,5),(3,4,5),(3,4,5),(3,4,5)]
+userdata = ' '.join([str(elem) for elem in column])
 exif_dict["Exif"][piexif.ExifIFD.UserComment] = piexif.helper.UserComment.dump(
     json.dumps(userdata),
     encoding="unicode"
