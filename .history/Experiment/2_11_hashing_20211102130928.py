@@ -289,11 +289,8 @@ rsa_key_position1 = {}
 print("rsa_keys1 = ",rsa_keys1)
 print("length rsa_keys1 = ",len(rsa_keys1))
 
-print("rsa keys = ", rsa_keys)
-print("length rsa_keys = ", len(rsa_keys))
 for i in range(len(rsa_keys)):
-    #print(rsa_keys[i] == int(rsa_keys1[i]))
-    pass
+    print(rsa_keys[i] == int(rsa_keys1[i]))
 
 for i in range(256):
     rsa_key_position1[i] = int(rsa_keys1[i])
@@ -301,11 +298,11 @@ for i in range(256):
 rsa_hashing1 = {}
 for i in range(256):
     C1 = pow(int(rsa_keys1[i]), D, N)
-    #print(C1)
+    print(C1)
     #rsa_hashing1[C1] = i
     rsa_hashing1[rsa_keys1[i]] = C1
 
-#print("rsa hashing1 = ", rsa_hashing1)
+print("rsa hashing1 = ", rsa_hashing1)
 
 for i in range(row):
     for j in range(col):
