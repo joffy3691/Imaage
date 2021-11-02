@@ -12,11 +12,11 @@ import random
 import pickle
 from PIL.ExifTags import TAGS
 
-my_img = Image.open('/home/pratyush/Downloads/Imaage/Experiment/Photo_self.jpeg')
+my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Experiment/A.jpg')
 # cv2_imshow(my_img)
 plt.imshow(my_img)
 pix = my_img.load()
-filename="/home/pratyush/Downloads/Imaage/Experiment/Photo_self.jpeg"
+filename="C:/Users/vishn/PycharmProjects/imo/dtjdtg/Experiment/A.jpg"
 exif_dict = piexif.load(filename)
 # RSA
 
@@ -245,17 +245,21 @@ print("Number of pixels = ", row * col)
 print("Number of rows = ", row)
 print("Number of col = ", col)
 user_key = ' '.join([str(key) for key in rsa_keys])
-tags = {
-    'user_key' : user_key,
-}
-data = pickle.dumps(tags)
-exif_ifd = {piexif.ExifIFD.MakerNote: data}
-
-exif_dict = {"0th": {}, "Exif": exif_ifd, "1st": {}, "thumbnail": None, "GPS": {}}
-
-exif_dat = piexif.dump(exif_dict)
-my_img.save(filename,  exif=exif_dat)
-
+exif_dict["Exif"][piexif.ExifIFD.UserComment] = piexif.helper.UserComment.dump(
+    json.dumps(user_key),
+    encoding="unicode"
+)
+# insert mutated data (serialised into JSON) into image
+piexif.insert(
+    piexif.dump(exif_dict),
+    filename
+)
+exif_dict = piexif.load(filename)
+# Extract the serialized data
+user_comment = piexif.helper.UserComment.load(exif_dict["Exif"][piexif.ExifIFD.UserComment])
+# Deserialize
+d = json.loads(user_comment)
+print("Read in exif data: %s" % d)
 rsa_key_position = {}
 
 for i in range(256):
@@ -279,21 +283,18 @@ plt.show()
 D = int(input())
 # Step 6: Decryption
 
-exif = my_img._getexif()
-
-rsa_keys1 = exif.get(37500).decode("utf-8","ignore").split('\x00\x00')
-rsa_keys1 = rsa_keys1[-1].split()
-rsa_keys1[-1] = rsa_keys1[-1].split('s')[0]
+#exif = my_img._getexif()
+#print(exif)
+rsa_keys1 = d.split()
 rsa_key_position1 = {}
 
-print("rsa_keys1 = ",rsa_keys1)
-print("length rsa_keys1 = ",len(rsa_keys1))
+#print("rsa_keys1 = ",rsa_keys1)
+#print("length rsa_keys1 = ",len(rsa_keys1))
 
-print("rsa keys = ", rsa_keys)
-print("length rsa_keys = ", len(rsa_keys))
-for i in range(len(rsa_keys)):
-    #print(rsa_keys[i] == int(rsa_keys1[i]))
-    pass
+#print("rsa keys = ", rsa_keys)
+#print("length rsa_keys = ", len(rsa_keys))
+#for i in range(len(rsa_keys)):
+#    print(rsa_keys[i]," ",int(rsa_keys1[i]))
 
 for i in range(256):
     rsa_key_position1[i] = int(rsa_keys1[i])
@@ -316,9 +317,6 @@ for i in range(row):
         # M1 = pow(int(r), D, N)
         # M2 = pow(int(g), D, N)
         # M3 = pow(int(b), D, N)
-        print("M1 = ", M1)
-        print("M2 = ", M2)
-        print("M3 = ", M3)
         pix[i, j] = (M1, M2, M3)
 
 plt.imshow(my_img)
