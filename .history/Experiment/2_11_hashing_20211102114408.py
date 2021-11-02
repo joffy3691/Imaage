@@ -295,18 +295,17 @@ for i in range(256):
 rsa_hashing1 = {}
 for i in range(256):
     C1 = pow(int(rsa_keys1[i]), D, N)
-    print(C1)
     #rsa_hashing1[C1] = i
     rsa_hashing1[rsa_keys1[i]] = C1
-
+    
 print("rsa hashing1 = ", rsa_hashing1)
 
 for i in range(row):
     for j in range(col):
         r, g, b = array[i][j]
-        M1 = rsa_hashing1.get(str(rsa_key_position1.get(r)))
-        M2 = rsa_hashing1.get(str(rsa_key_position1.get(g)))
-        M3 = rsa_hashing1.get(str(rsa_key_position1.get(b)))
+        M1 = rsa_key_position1.get(r)
+        M2 = rsa_hashing1.get(rsa_key_position1.get(g))
+        M3 = rsa_hashing1.get(rsa_key_position1.get(b))
         # M1 = pow(int(r), D, N)
         # M2 = pow(int(g), D, N)
         # M3 = pow(int(b), D, N)

@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 
-my_img = Image.open('/home/pratyush/Downloads/Imaage/Experiment/lena.png')
+my_img = Image.open('/home/pratyush/Downloads/Imaage/Experiment/o.png')
 # cv2_imshow(my_img)
 plt.imshow(my_img)
 pix = my_img.load()

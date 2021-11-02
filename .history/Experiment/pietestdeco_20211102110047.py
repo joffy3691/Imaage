@@ -9,5 +9,5 @@ image = Image.open('/home/pratyush/Downloads/Imaage/A.jpeg')
     if k in TAGS
 }'''
 exif_data_PIL = image._getexif()
-#print(exif_data_PIL)
-print(exif_data_PIL.get(37500).decode("utf-8","ignore").split())
+p#rint(exif_data_PIL)
+print(exif_data_PIL.get('MakerNote').decode("utf-8","ignore").split())

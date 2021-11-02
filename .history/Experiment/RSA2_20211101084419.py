@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 
-my_img = Image.open('/home/pratyush/Downloads/Imaage/Experiment/lena.png')
+my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/baboon.png')
 # cv2_imshow(my_img)
 plt.imshow(my_img)
 pix = my_img.load()
@@ -163,7 +163,6 @@ for i in range(row):
         C2 = C2 % 256
         C3 = C3 % 256
         pix[i, j] = (C1, C2, C3)
-        print(pix[i,j])
 
 plt.imshow(my_img)
 plt.show()
@@ -176,7 +175,6 @@ for i in range(row):
         M2 = pow(g, D, N)
         M3 = pow(b, D, N)
         pix[i, j] = (M1, M2, M3)
-        print(pix[i,j])
 
 plt.imshow(my_img)
 plt.show()
