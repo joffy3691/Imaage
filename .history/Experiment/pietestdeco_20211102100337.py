@@ -8,4 +8,4 @@ exif = {
     for k, v in image._getexif().items()
     if k in TAGS
 }
-print(exif.get('MakerNote').decode("utf-8","ignore").split())
+print(exif.get('MakerNote').split(','))
