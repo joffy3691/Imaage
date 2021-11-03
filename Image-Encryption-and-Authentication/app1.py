@@ -13,6 +13,8 @@ import time
 import json
 import piexif
 import piexif.helper
+import parameterisedwithout
+import param2
 def convert_to_bytes(file_or_bytes, resize=None):
     if isinstance(file_or_bytes, str):
         img = PIL.Image.open(file_or_bytes)
@@ -38,6 +40,8 @@ def convert_to_bytes(file_or_bytes, resize=None):
 left_col = [[sg.Text('Folder'), sg.In(size=(25,1), enable_events=True ,key='-FOLDER-'), sg.FolderBrowse()],
             [sg.Listbox(values=[], enable_events=True, size=(40,20),key='-FILE LIST-')],
             [sg.Text('Secret Key'),sg.In(key='key', size=(10,1))],
+            [sg.Text('Public Key'),sg.In(key='Publickey', size=(50,1))],
+            [sg.Text('RSA Key'),sg.In(key='Rsakey', size=(50,1))],
             [sg.Button('Encrypt'),sg.Button('Decrypt')],
             [sg.Text('Mode'),sg.Drop(values=('Secure', 'Fast'),key='mode')],
             [sg.Text('avg-Hash calculated: '), sg.Text(size=(15,1), key='-OUTPUT1-')],
@@ -78,7 +82,7 @@ while True:
             userdata=str(face[0])+" "+str(face[1])+" "+str(face[2])+" "+str(face[3])
             crop = im[startY:endY, startX:endX]
             cv2.imwrite("crop_{0}.jpeg", crop)
-            encrypt.encrypt("crop_{0}.jpeg", values['key'], values['mode'])
+            parameterisedwithout.encrypt("crop_{0}.jpeg", values['key'])
             cdfg=cv2.imread("crop_{0}.jpeg")
             im[startY:endY, startX:endX] = cdfg
             exif_dict["Exif"][piexif.ExifIFD.UserComment] = piexif.helper.UserComment.dump(
@@ -90,14 +94,14 @@ while True:
                 piexif.dump(exif_dict),
                 filename
             )
-            cv2.imwrite("garbage.jpeg", im)
+            cv2.imwrite(values['-FILE LIST-'][0], im)
 
         toc = time.perf_counter()
         print(f"Downloaded the tutorial in {toc - tic:0.4f} seconds")
         window.refresh()
     if event == 'Decrypt' and values['key']:
         print('Starting decryption')
-        im = cv2.imread("garbage.jpeg")
+        im = cv2.imread(values['-FILE LIST-'][0])
         filename = values['-FILE LIST-'][0]
         exif_dict = piexif.load(filename)
         # Extract the serialized data
@@ -111,7 +115,7 @@ while True:
         print(x1[2])
         crop = im[int(x1[1]):int(x1[3]), int(x1[0]):int(x1[2])]
         cv2.imwrite("crop_{1}.jpeg", crop)
-        decrypt.decrypt("crop_{1}.jpeg",values['key'],values['mode'])
+        param2.decrypt('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/baboon.png',values['key'], values['Rsakey'], values['Publickey'])
         cdf = cv2.imread("crop_{1}.jpeg")
         im[int(x1[1]):int(x1[3]), int(x1[0]):int(x1[2])] = cdf
         plt.imshow(im)
