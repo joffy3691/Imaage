@@ -250,10 +250,6 @@ for i in range(row):
 print("Number of pixels = ", row * col)
 print("Number of rows = ", row)
 print("Number of col = ", col)
-rsa_key_position = {}
-
-for i in range(256):
-    rsa_key_position[rsa_keys[i]] = i
 
 df = pd.DataFrame(column, columns =['C1', 'C2', 'C3'])
 

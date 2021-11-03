@@ -8,6 +8,7 @@ import piexif.helper
 import hashlib
 import pandas as pd
 import numpy as np
+
 def decrypt(image, key, rsa_key, public_key):
     my_img = Image.open(image)
     pix = my_img.load()
@@ -16,6 +17,10 @@ def decrypt(image, key, rsa_key, public_key):
     row, col = my_img.size[0], my_img.size[1]
     data = pd.read_parquet(f'{image}.parquet.gzip')
     array = data.to_numpy()
+    array1=array[:86]
+    array1=array1.flatten()
+    array1=array1[:-2].tolist()
+    array=array[86:]
     array = array.reshape(row, col, 3)
     """for i in range(len(array)):
         for j in range(col):
@@ -24,15 +29,24 @@ def decrypt(image, key, rsa_key, public_key):
     D = rsa_key
     N = public_key
     print("D decryption = ", D)
-    # Step 6: Decryption
+    rsa_keys1 =array1
+    rsa_key_position1 = {}
+
+    for i in range(256):
+        rsa_key_position1[i] = rsa_keys1[i]
+
+    rsa_hashing1 = {}
+    for i in range(256):
+        C1 = pow(rsa_keys1[i], D, N)
+        rsa_hashing1[rsa_keys1[i]] = C1
 
     for i in range(row):
         for j in range(col):
             r, g, b = array[i][j]
-            M1 = pow(int(r), D, N)
-            M2 = pow(int(g), D, N)
-            M3 = pow(int(b), D, N)
-            pix[i, j] = (M1, M2, M3)
+            M1 = rsa_hashing1.get(rsa_key_position1.get(r))
+            M2 = rsa_hashing1.get(rsa_key_position1.get(g))
+            M3 = rsa_hashing1.get(rsa_key_position1.get(b))
+            pix[i, j] = (M1 % 256, M2 % 256, M3 % 256)
 
     plt.imshow(my_img)
     plt.show()
