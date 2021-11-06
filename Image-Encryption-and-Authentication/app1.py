@@ -3,8 +3,6 @@ import os.path
 import PIL.Image
 import io
 import base64
-import encrypt
-import decrypt
 import hashes
 import cv2
 import matplotlib.pyplot as plt
@@ -13,8 +11,8 @@ import time
 import json
 import piexif
 import piexif.helper
-import parameterisedwithout
-import param2
+import encrypting
+import decrypting
 def convert_to_bytes(file_or_bytes, resize=None):
     if isinstance(file_or_bytes, str):
         img = PIL.Image.open(file_or_bytes)
@@ -69,58 +67,14 @@ while True:
         break
     if event == 'Encrypt' and values['key']:
         print('Starting encryption')
-        im = cv2.imread(values['-FILE LIST-'][0])
-        filename = values['-FILE LIST-'][0]
-        exif_dict = piexif.load(filename)
         tic = time.perf_counter()
-        faces, confidences = cv.detect_face(im)
-        # loop through detected faces and add bounding box
-        userdata=""
-        for face in faces:
-            (startX, startY) = face[0], face[1]
-            (endX, endY) = face[2], face[3]
-            userdata=str(face[0])+" "+str(face[1])+" "+str(face[2])+" "+str(face[3])
-            crop = im[startY:endY, startX:endX]
-            cv2.imwrite("crop_{0}.jpeg", crop)
-            parameterisedwithout.encrypt("crop_{0}.jpeg", values['key'])
-            cdfg=cv2.imread("crop_{0}.jpeg")
-            im[startY:endY, startX:endX] = cdfg
-            exif_dict["Exif"][piexif.ExifIFD.UserComment] = piexif.helper.UserComment.dump(
-                json.dumps(userdata),
-                encoding="unicode"
-            )
-            # insert mutated data (serialised into JSON) into image
-            piexif.insert(
-                piexif.dump(exif_dict),
-                filename
-            )
-            cv2.imwrite(values['-FILE LIST-'][0], im)
-
+        encrypting.encryption(values['-FILE LIST-'][0], values['key'])
         toc = time.perf_counter()
         print(f"Downloaded the tutorial in {toc - tic:0.4f} seconds")
         window.refresh()
     if event == 'Decrypt' and values['key']:
         print('Starting decryption')
-        im = cv2.imread(values['-FILE LIST-'][0])
-        filename = values['-FILE LIST-'][0]
-        exif_dict = piexif.load(filename)
-        # Extract the serialized data
-        user_comment = piexif.helper.UserComment.load(exif_dict["Exif"][piexif.ExifIFD.UserComment])
-        # Deserialize
-        d = json.loads(user_comment)
-        x1 = d.split()
-        print(x1[1])
-        print(x1[3])
-        print(x1[0])
-        print(x1[2])
-        crop = im[int(x1[1]):int(x1[3]), int(x1[0]):int(x1[2])]
-        cv2.imwrite("crop_{1}.jpeg", crop)
-        param2.decrypt('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/baboon.png',values['key'], values['Rsakey'], values['Publickey'])
-        cdf = cv2.imread("crop_{1}.jpeg")
-        im[int(x1[1]):int(x1[3]), int(x1[0]):int(x1[2])] = cdf
-        plt.imshow(im)
-        plt.show()
-        cv2.imwrite("garbage1.jpeg", im)
+        decrypting.decryption(values['-FILE LIST-'][0],values['key'], values['Rsakey'], values['Publickey'])
         window.refresh()
     if event == '-FOLDER-':
         folder = values['-FOLDER-']

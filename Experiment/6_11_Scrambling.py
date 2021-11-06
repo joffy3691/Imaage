@@ -11,11 +11,11 @@ import pandas as pd
 import numpy as np
 
 def rotateRowRight(arr,d,n,i):
-    arr[i,:][0] = arr[i,d:n][0] + arr[i,0:d][0]
+    arr[i,:] = arr[i,d:n] + arr[i,0:d]
 
 
 def rotateRowLeft(arr,d,n,i):
-    arr[i,:][0] = arr[i,d:n][0] + arr[i,0:d][0]
+    arr[i,:] = arr[i,d:n] + arr[i,0:d]
 
 
 def rotateColDown(arr,d,n,j):
@@ -26,7 +26,7 @@ def rotateColUp(arr, d, n, j):
     arr[:,j] = arr[d:n,j] + arr[0:d,j]
 
 
-my_img = Image.open('/home/pratyush/Downloads/Imaage/Image-Encryption-and-Authentication/whatsapp-1984584_960_720.png')
+my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/whatsapp-1984584_960_720.png')
 key = input()
 pix = my_img.load()
 plt.imshow(my_img)

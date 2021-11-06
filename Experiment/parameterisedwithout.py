@@ -9,6 +9,8 @@ import hashlib
 import pandas as pd
 import numpy as np
 import random
+import cv2
+import cvlib as cv
 
 #my_img = Image.open('/home/pratyush/Downloads/Imaage-main/Experiment/PROFILE.jpeg')
 # cv2_imshow(my_img)
@@ -162,7 +164,7 @@ print(D)
 enc = [[0 for x in range(3000)] for y in range(3000)]
 
 
-def encrypt(image, key):
+def encrypt(image, key,column):
     my_img = Image.open(image)
     pix = my_img.load()
     size = my_img.size
@@ -223,7 +225,6 @@ def encrypt(image, key):
     # Step 5: Encryption
     size = my_img.size
     userdata = ""
-    column = []
     for i in range(85):
         C1 = rsa_keys[i*3]
         C2 = rsa_keys[i * 3+1]
@@ -257,3 +258,22 @@ def encrypt(image, key):
     my_img.save(image)
 
     print("above dec N = ", N)
+
+def encryption(imagelocation,key):
+    im = cv2.imread(imagelocation)
+    faces, confidences = cv.detect_face(im)
+    # loop through detected faces and add bounding box
+    userdata = ""
+    for face in faces:
+        (startX, startY) = face[0], face[1]
+        (endX, endY) = face[2], face[3]
+        userdata = str(face[0]) + " " + str(face[1]) + " " + str(face[2]) + " " + str(face[3])
+        column=[]
+        column.append((face[0], face[1] ,face[2]))
+        column.append((face[3], 0, 0))
+        crop = im[startY:endY, startX:endX]
+        cv2.imwrite("crop_{0}.jpeg", crop)
+        encrypt("crop_{0}.jpeg", key,column)
+        cdfg = cv2.imread("crop_{0}.jpeg")
+        im[startY:endY, startX:endX] = cdfg
+        cv2.imwrite(imagelocation, im)

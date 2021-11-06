@@ -8,6 +8,8 @@ import piexif.helper
 import hashlib
 import pandas as pd
 import numpy as np
+import cv2
+import cvlib as cv
 
 def decrypt(image, key, rsa_key, public_key):
     my_img = Image.open(image)
@@ -17,10 +19,10 @@ def decrypt(image, key, rsa_key, public_key):
     row, col = my_img.size[0], my_img.size[1]
     data = pd.read_parquet(f'{image}.parquet.gzip')
     array = data.to_numpy()
-    array1=array[:86]
+    array1=array[2:88]
     array1=array1.flatten()
     array1=array1[:-2].tolist()
-    array=array[86:]
+    array=array[88:]
     array = array.reshape(row, col, 3)
     """for i in range(len(array)):
         for j in range(col):
@@ -91,3 +93,18 @@ def decrypt(image, key, rsa_key, public_key):
     plt.show()
 
     my_img.save(image)
+def decryption(imagelocation,key, rsa_key, public_key):
+    im = cv2.imread(imagelocation)
+    data = pd.read_parquet('crop_{1}.jpeg.parquet.gzip')
+    array = data.to_numpy()
+    x1 = array[0:2]
+    x1 = x1.flatten()
+    x1 = x1[:-2].tolist()
+    crop = im[int(x1[1]):int(x1[3]), int(x1[0]):int(x1[2])]
+    cv2.imwrite("crop_{1}.jpeg", crop)
+    decrypt('crop_{1}.jpeg',key, rsa_key, public_key)
+    cdf = cv2.imread("crop_{1}.jpeg")
+    im[int(x1[1]):int(x1[3]), int(x1[0]):int(x1[2])] = cdf
+    plt.imshow(im)
+    plt.show()
+    cv2.imwrite("garbage1.jpeg", im)
