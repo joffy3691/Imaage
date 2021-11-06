@@ -128,8 +128,8 @@ def encryption(imagelocation, key):
         column.append((face[0], face[1], face[2]))
         column.append((face[3], 0, 0))
         crop = im[startY:endY, startX:endX]
-        cv2.imwrite("crop_{0}.jpeg", crop)
-        partialencrypt("crop_{0}.jpeg", key, column,imagelocation)
-        cdfg = cv2.imread("crop_{0}.jpeg")
+        cv2.imwrite("crop_{0}.png", crop)
+        partialencrypt("crop_{0}.png", key, column,imagelocation)
+        cdfg = cv2.imread("crop_{0}.png")
         im[startY:endY, startX:endX] = cdfg
         cv2.imwrite(imagelocation, im)
