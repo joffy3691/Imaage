@@ -67,7 +67,7 @@ def LogisticEncryption(imageName, key):
             s += G[i - 1][j - 1] * (10 ** (-j))
         g.append(s)
         R = (R * s) % 1
-
+    print(R)
     L = (R + key_list[12] / 256) % 1
     S_x = round(((g[0] + g[1] + g[2]) * (10 ** 4) + L * (10 ** 4)) % 256)
     V1 = sum(key_list)
@@ -260,7 +260,7 @@ imshow(np.asarray(im), cmap='gray')
 # + id="VtAVT_DpjJx0" colab_type="code" colab={}
 image = "lena"
 ext = ".png"
-key = "Pratyush"
+key = "Pratyushaqwed"
 
 # + id="0pXvL8Rzme7R" colab_type="code" outputId="ea30dd24-ea1a-4049-f1ea-c3ffc7c0a8be" colab={"base_uri": "https://localhost:8080/", "height": 286}
 pil_im = Image.open(image + ext, 'r')
@@ -280,7 +280,7 @@ plt.show()
 # + id="5EXMdcJ9j4fj" colab_type="code" outputId="3dfa7c3a-983d-4641-c67f-402c321136bf" colab={"base_uri": "https://localhost:8080/", "height": 286}
 LogisticDecryption(image + "_LogisticEnc.png", key)
 im = Image.open(image + "_LogisticDec.png", 'r')
-print("Dencrypted")
+print("Decrypted")
 imshow(np.asarray(im))
 plt.show()
 # + [markdown] id="ls3zjCpbm1JX" colab_type="text"

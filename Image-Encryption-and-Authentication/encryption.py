@@ -1,28 +1,42 @@
 from PIL import Image
 from matplotlib import pyplot as plt
 import imagehash
-
-im = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/PROFILE.jpeg')
+from backports.pbkdf2 import pbkdf2_hmac
+import os, binascii
+im = Image.open('srk.jpg')
 hash = imagehash.phash(im)
 print(hash)
 pix = im.load()
 size = im.size
 mod = min(size)
 print(mod)
-enc_key = "CRYPTOGRAPHY"
-key_length = len(enc_key)
+enc_key = "A"
+
+row, col = im.size[0], im.size[1]
+salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
+passwd = enc_key.encode("utf8")
+key = pbkdf2_hmac("sha256", passwd, salt, 50000, 2048)
+print("Derived key:", binascii.hexlify(key))
+key = binascii.hexlify(key)
+key = str(key, 'UTF-8')
+print(key)
+key_length = len(key)
 key_array = []
-
-for key in enc_key:
-    key_array.append(ord(key)%mod)
+# key_sum = sum(key_array)
+key_arra = []
+for key in key:
+    key_arra.append(ord(key) % mod)
+for i in range(len(key_arra) - 5):
+    # adding the alternate numbers
+    sum = key_arra[i] + key_arra[i + 1] + key_arra[i + 2] + key_arra[i + 3] + key_arra[i + 4] + key_arra[i + 5]
+    key_array.append(sum % mod)
 print(key_array)
-
-for q in range(size[0]):
-    for r in range(size[1]):
-        reds=pix[q,r][0]^(key_array[q*r%key_length]**2%255)
-        greens=pix[q,r][1]^(key_array[q*r%key_length]**2%255)
-        blues=pix[q,r][2]^(key_array[q*r%key_length]**2%255)
-        pix[q,r] = (reds,greens,blues)
+# for q in range(size[0]):
+#     for r in range(size[1]):
+#         reds=pix[q,r][0]^(key_array[q*r%key_length]**2%255)
+#         greens=pix[q,r][1]^(key_array[q*r%key_length]**2%255)
+#         blues=pix[q,r][2]^(key_array[q*r%key_length]**2%255)
+#         pix[q,r] = (reds,greens,blues)
 
 for k in range (2,int(mod)):
     for i in range (0,size[0],k):
@@ -47,4 +61,4 @@ for k in range (2,int(mod)):
 
 plt.imshow(im)
 plt.show()
-im.save('output.jpeg') # Save the modified pixels as .png
+im.save('output.png') # Save the modified pixels as .png
