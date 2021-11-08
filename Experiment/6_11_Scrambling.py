@@ -27,7 +27,7 @@ def rotateColUp(arr, d, n, j):
     arr[:,j] = numpy.concatenate((arr[n-d:n,j],arr[0:n-d,j]))
 
 
-my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/srk.jpg')
+my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/Microsoft_Excel_2013_logo_with_background.png')
 key = input()
 pix = my_img.load()
 plt.imshow(my_img)
@@ -66,88 +66,27 @@ print(key_array)
 for i in range(row):
     for j in range(col):
         enc[i][j]=[pix[i,j][0],pix[i,j][1],pix[i,j][2]]
-for q in range(size[0]):
+for i in range(2):
+    if(i>=1):
+        enc=enc.tolist()
+    for q in range(size[0]):
+        var = key_array[q] % 2
+        if var:
+            rotateRowLeft(enc, (key_array[q  % len(key_array)] ** 2) % size[1], size[1], q)
+        else:
+            rotateRowRight(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
 
-    # for r in range(size[1]):
-    #      reds = pix[q, r][0]
-    #     greens = pix[q, r][1]
-    #     blues = pix[q, r][2]
-    #     reds1 = pix[q, (key_array[q*r%len(key_array)] ** 2)%size[1]][0]
-    #     greens1 = pix[q, (key_array[q*r%len(key_array)] ** 2)%size[1]][1]
-    #     blues1 = pix[q, (key_array[q*r%len(key_array)]**2)%size[1]][2]
-    #     pix[q, (key_array[q * r % len(key_array)] ** 2) % size[1]]=(reds,greens,blues)
-    #     pix[q, r]=(reds1,greens1,blues1)
-    #
+    enc=numpy.array(enc)
 
-    var = key_array[q] % 2
-    # print(size[0])
-    if var:
-        rotateRowLeft(enc, (key_array[q  % len(key_array)] ** 2) % size[1], size[1], q)
-    else:
-        rotateRowRight(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
-
-enc=numpy.array(enc)
-# print(enc[:,1])
-for q in range(size[1]):
-
-    # for r in range(size[1]):
-    #      reds = pix[q, r][0]
-    #     greens = pix[q, r][1]
-    #     blues = pix[q, r][2]
-    #     reds1 = pix[q, (key_array[q*r%len(key_array)] ** 2)%size[1]][0]
-    #     greens1 = pix[q, (key_array[q*r%len(key_array)] ** 2)%size[1]][1]
-    #     blues1 = pix[q, (key_array[q*r%len(key_array)]**2)%size[1]][2]
-    #     pix[q, (key_array[q * r % len(key_array)] ** 2) % size[1]]=(reds,greens,blues)
-    #     pix[q, r]=(reds1,greens1,blues1)
-    #
-
-    var = key_array[q] % 2
-    # print(size[0])
-    # print(var)
-    # print(q)
-    if var:
-        rotateColUp(enc, (key_array[q  % len(key_array)] ** 2) % size[0], size[0], q)
-    else:
-        rotateColDown(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
+    for q in range(size[1]):
+        var = key_array[q] % 2
+        if var:
+            rotateColUp(enc, (key_array[q  % len(key_array)] ** 2) % size[0], size[0], q)
+        else:
+            rotateColDown(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
 for i in range(size[0]):
     for j in range(size[1]):
         pix[i,j]=(enc[i][j][0],enc[i][j][1],enc[i][j][2])
-
-# for q in range(size[0]):
-#     for r in range(size[1]):
-#         reds = pix[q, r][0]
-#         greens = pix[q, r][1]
-#         blues = pix[q, r][2]
-#         reds1 = pix[(key_array[q*r%len(key_array)] ** 2)%size[0], r][0]
-#         greens1 = pix[(key_array[q*r%len(key_array)] ** 2)%size[0], r][1]
-#         blues1 = pix[(key_array[q*r%len(key_array)] ** 2)%size[0],r][2]
-#         pix[(key_array[q*r%len(key_array)] ** 2)%size[0],r]=(reds,greens,blues)
-#         pix[q, r]=(reds1,greens1,blues1)
-
-# for q in range(size[0]):
-#     for r in range(size[1]):
-#         reds = pix[q, r][0]
-#         greens = pix[q, r][1]
-#         blues = pix[q, r][2]
-#         reds1 = pix[(key_array[q*r%len(key_array)] ** 2)%size[0],  (key_array[q * r % len(key_array)] ** 2) % size[1]][0]
-#         greens1 = pix[(key_array[q*r%len(key_array)] ** 2)%size[0],  (key_array[q * r % len(key_array)] ** 2) % size[1]][1]
-#         blues1 = pix[(key_array[q*r%len(key_array)] ** 2)%size[0], (key_array[q * r % len(key_array)] ** 2) % size[1]][2]
-#         pix[(key_array[q*r%len(key_array)] ** 2)%size[0], (key_array[q * r % len(key_array)] ** 2) % size[1]]=(reds,greens,blues)
-#         pix[q, r]=(reds1,greens1,blues1)
-
-# for q in range(size[0]):
-#     for r in range(size[1]):
-#         reds = pix[q, r][0]
-#         greens = pix[q, r][1]
-#         blues = pix[q, r][2]
-#         reds1 = pix[(key_array[q*r%len(key_array)] ** 2)%size[1], r][0]
-#         greens1 = pix[(key_array[q*r%len(key_array)] ** 3)%size[1], r][1]
-#         blues1 = pix[(key_array[q*r%len(key_array)])%size[1], r][2]
-#         pix[(key_array[q * r % len(key_array)] ** 2) % size[1], r]=(reds,pix[(key_array[q * r % len(key_array)] ** 2) % size[1], r][1],pix[(key_array[q * r % len(key_array)] ** 2) % size[1], r][2])
-#         pix[(key_array[q*r%len(key_array)] ** 3)%size[1], r]=(pix[(key_array[q*r%len(key_array)] ** 3)%size[1], r][0],pix[(key_array[q*r%len(key_array)] ** 3)%size[1], r][1],blues)
-#         pix[(key_array[q*r%len(key_array)])%size[1], r]=(pix[(key_array[q*r%len(key_array)])%size[1], r][0],greens,pix[(key_array[q*r%len(key_array)])%size[1], r][2])
-#         pix[q, r]=(reds1,greens1,blues1)
-
 
 plt.imshow(my_img)
 plt.show()
