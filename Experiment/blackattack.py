@@ -4,7 +4,7 @@ import numpy as np
 # Opening the image and converting
 # it to RGB color mode
 # IMAGE_PATH => Path to the image
-img = Image.open(r"C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/output.png").convert('RGB')
+img = Image.open(r"C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/crop_{0}.png").convert('RGB')
 
 # Extracting the image data &
 # creating an numpy array out of it
@@ -17,5 +17,5 @@ img_arr[0: 50, 0: 50] = (0, 0, 0)
 img = Image.fromarray(img_arr)
 
 # Displaying the image
-img.save('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/output.png')
+img.save('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/crop_{0}.png')
 img.show()

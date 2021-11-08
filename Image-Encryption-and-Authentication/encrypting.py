@@ -174,6 +174,6 @@ def encryption(imagelocation, key):
         crop = im[startY:endY, startX:endX]
         cv2.imwrite("crop_{0}.png", crop)
         partialencrypt("crop_{0}.png", key, column,imagelocation)
-        cdfg = cv2.imread("crop_{0}.png")
-        im[startY:endY, startX:endX] = cdfg
+        temp = cv2.imread("crop_{0}.png")
+        im[startY:endY, startX:endX] = temp
         cv2.imwrite(imagelocation, im)

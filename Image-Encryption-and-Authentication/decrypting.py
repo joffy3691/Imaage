@@ -149,8 +149,8 @@ def decryption(imagelocation,key, rsa_key, public_key):
     crop = im[x1[1]:x1[3], x1[0]:x1[2]]
     cv2.imwrite("crop_{1}.png", crop)
     partialdecrypt('crop_{1}.png',key, rsa_key, public_key,imagelocation)
-    cdf = cv2.imread("crop_{1}.png")
-    im[int(x1[1]):int(x1[3]), int(x1[0]):int(x1[2])] = cdf
+    temp = cv2.imread("crop_{1}.png")
+    im[int(x1[1]):int(x1[3]), int(x1[0]):int(x1[2])] = temp
     plt.imshow(im)
     plt.show()
     cv2.imwrite(imagelocation, im)
