@@ -74,7 +74,10 @@ while True:
         window.refresh()
     if event == 'Decrypt' and values['key']:
         print('Starting decryption')
+        tic = time.perf_counter()
         decrypting.decryption(values['-FILE LIST-'][0],values['key'], values['Rsakey'], values['Publickey'])
+        toc = time.perf_counter()
+        print(f"Downloaded the tutorial in {toc - tic:0.4f} seconds")
         window.refresh()
     if event == '-FOLDER-':
         folder = values['-FOLDER-']

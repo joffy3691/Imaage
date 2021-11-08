@@ -3,7 +3,7 @@ from backports.pbkdf2 import pbkdf2_hmac
 import matplotlib.pyplot as plt
 from PIL import Image
 import hashlib
-my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/PROFILE.jpeg')
+my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/Microsoft_Excel_2013_logo_with_background.png')
 # cv2_imshow(my_img)
 plt.imshow(my_img)
 pix = my_img.load()
@@ -160,7 +160,7 @@ print(mod)
 enc_key = key
 salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
 passwd = enc_key.encode("utf8")
-key = pbkdf2_hmac("sha256", passwd, salt, 50000, 2048)
+key = pbkdf2_hmac("sha256", passwd, salt, 50, 2048)
 print("Derived key:", binascii.hexlify(key))
 key=binascii.hexlify(key)
 key=str(key, 'UTF-8')
@@ -199,7 +199,7 @@ key = input()
 enc_key = key
 salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
 passwd = enc_key.encode("utf8")
-key = pbkdf2_hmac("sha256", passwd, salt, 50000, 2048)
+key = pbkdf2_hmac("sha256", passwd, salt, 50, 2048)
 print("Derived key:", binascii.hexlify(key))
 key=binascii.hexlify(key)
 key=str(key, 'UTF-8')

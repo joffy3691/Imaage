@@ -72,7 +72,7 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     enc_key = key
     salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
     passwd = enc_key.encode("utf8")
-    key = pbkdf2_hmac("sha256", passwd, salt, 50000, 2048)
+    key = pbkdf2_hmac("sha256", passwd, salt, 50, 2048)
     print("Derived key:", binascii.hexlify(key))
     key = binascii.hexlify(key)
     key = str(key, 'UTF-8')
