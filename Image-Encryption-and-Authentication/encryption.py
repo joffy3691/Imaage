@@ -31,12 +31,17 @@ for i in range(len(key_arra) - 5):
     sum = key_arra[i] + key_arra[i + 1] + key_arra[i + 2] + key_arra[i + 3] + key_arra[i + 4] + key_arra[i + 5]
     key_array.append(sum % mod)
 print(key_array)
-# for q in range(size[0]):
-#     for r in range(size[1]):
-#         reds=pix[q,r][0]^(key_array[q*r%key_length]**2%255)
-#         greens=pix[q,r][1]^(key_array[q*r%key_length]**2%255)
-#         blues=pix[q,r][2]^(key_array[q*r%key_length]**2%255)
-#         pix[q,r] = (reds,greens,blues)
+for q in range(size[0]):
+    for r in range(size[1]):
+        i = 1
+        reds = pix[q, r][0] ^ pix[(q - i) % size[0], (r - i) % size[1]][0]
+        greens = pix[q, r][1] ^ pix[(q - i) % size[0], (r - i) % size[1]][1]
+        blues = pix[q, r][2] ^ pix[(q - i) % size[0], (r - i) % size[1]][2]
+        pix[q, r] = (reds, greens, blues)
+        reds = pix[q, r][0] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
+        greens = pix[q, r][1] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
+        blues = pix[q, r][2] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
+        pix[q, r] = (reds, greens, blues)
 
 for k in range (2,int(mod)):
     for i in range (0,size[0],k):

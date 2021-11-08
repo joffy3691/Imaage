@@ -57,13 +57,17 @@ for k in range (int(mod)-1,1,-1):
             pix[y1,x] = pixel2
             pix[y2,x] = pixel1
 
-# for q in range(size[0]):
-#     for r in range(size[1]):
-#         reds=pix[q,r][0]^(key_array[q*r%key_length]**2%255)
-#         greens=pix[q,r][1]^(key_array[q*r%key_length]**2%255)
-#         blues=pix[q,r][2]^(key_array[q*r%key_length]**2%255)
-#         pix[q,r] = (reds,greens,blues)
-# plt.imshow(im)
+for q in range(size[0] - 1, -1, -1):
+    for r in range(size[1] - 1, -1, -1):
+        i = 1
+        reds = pix[q, r][0] ^ pix[(q - i) % size[0], (r - i) % size[1]][0]
+        greens = pix[q, r][1] ^ pix[(q - i) % size[0], (r - i) % size[1]][1]
+        blues = pix[q, r][2] ^ pix[(q - i) % size[0], (r - i) % size[1]][2]
+        pix[q, r] = (reds, greens, blues)
+        reds = pix[q, r][0] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
+        greens = pix[q, r][1] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
+        blues = pix[q, r][2] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
+        pix[q, r] = (reds, greens, blues)
 
 im.save('decrypted.png')  # Save the modified pixels as .png
 hash = imagehash.phash(im)

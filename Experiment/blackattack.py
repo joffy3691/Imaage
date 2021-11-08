@@ -11,7 +11,7 @@ img = Image.open(r"C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-an
 img_arr = np.array(img)
 
 # Turning the pixel values of the 400x400 pixels to black
-img_arr[0: 100, 0: 200] = (0, 0, 0)
+img_arr[0: 50, 0: 50] = (0, 0, 0)
 
 # Creating an image out of the previously modified array
 img = Image.fromarray(img_arr)
