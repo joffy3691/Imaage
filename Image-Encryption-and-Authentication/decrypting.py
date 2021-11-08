@@ -45,7 +45,7 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     #RSA
     D = int(rsa_key)
     N = int(public_key)
-    print("D decryption = ", D)
+    # print("D decryption = ", D)
     rsa_keys1 =array1
     rsa_key_position1 = {}
 
@@ -65,18 +65,18 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
             M3 = rsa_hashing1.get(rsa_key_position1.get(b))
             pix[i, j] = (M1 % 256, M2 % 256, M3 % 256)
 
-    plt.imshow(my_img)
-    plt.show()
+    # plt.imshow(my_img)
+    # plt.show()
 
     #PBKDF2
     enc_key = key
     salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
     passwd = enc_key.encode("utf8")
     key = pbkdf2_hmac("sha256", passwd, salt, 50, 2048)
-    print("Derived key:", binascii.hexlify(key))
+    # print("Derived key:", binascii.hexlify(key))
     key = binascii.hexlify(key)
     key = str(key, 'UTF-8')
-    print(key)
+    # print(key)
     key_length = len(key)
     key_array = []
     key_arra = []
@@ -90,7 +90,7 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     for i in key_array:
         if i not in res:
             res.append(i)
-    print(key_array)
+    # print(key_array)
 
     #SCRAMBLING
     enc = [[0 for x in range(col)] for y in range(row)]
@@ -118,8 +118,8 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
         for j in range(size[1]):
             pix[i, j] = (enc[i][j][0], enc[i][j][1], enc[i][j][2])
 
-    plt.imshow(my_img)
-    plt.show()
+    # plt.imshow(my_img)
+    # plt.show()
 
     #CBC
     for q in range(size[0] - 1, -1, -1):
@@ -134,8 +134,8 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
             blues = pix[q, r][2] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
             pix[q, r] = (reds, greens, blues)
 
-    plt.imshow(my_img)
-    plt.show()
+    # plt.imshow(my_img)
+    # plt.show()
 
     my_img.save(image)
 def decryption(imagelocation,key, rsa_key, public_key):
@@ -145,13 +145,13 @@ def decryption(imagelocation,key, rsa_key, public_key):
     x1 = array[0:2]
     x1 = x1.flatten()
     x1 = x1[:-2].tolist()
-    print(x1)
+    # print(x1)
     crop = im[x1[1]:x1[3], x1[0]:x1[2]]
     cv2.imwrite("crop_{1}.png", crop)
     partialdecrypt('crop_{1}.png',key, rsa_key, public_key,imagelocation)
     temp = cv2.imread("crop_{1}.png")
     im[int(x1[1]):int(x1[3]), int(x1[0]):int(x1[2])] = temp
-    plt.imshow(im)
-    plt.show()
+    # plt.imshow(im)
+    # plt.show()
     cv2.imwrite(imagelocation, im)
-    print("decryption over")
+    #print("decryption over")

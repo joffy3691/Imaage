@@ -40,10 +40,10 @@ def partialencrypt(image, key, column,imagelocation):
     salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
     passwd = enc_key.encode("utf8")
     key = pbkdf2_hmac("sha256", passwd, salt, 50, 2048)
-    print("Derived key:", binascii.hexlify(key))
+    #print("Derived key:", binascii.hexlify(key))
     key = binascii.hexlify(key)
     key = str(key, 'UTF-8')
-    print(key)
+    #print(key)
     key_length = len(key)
     key_array = []
     # key_sum = sum(key_array)
@@ -54,7 +54,7 @@ def partialencrypt(image, key, column,imagelocation):
         # adding the alternate numbers
         sum = key_arra[i] + key_arra[i + 1] + key_arra[i + 2] + key_arra[i + 3] + key_arra[i + 4] + key_arra[i + 5]
         key_array.append(sum % mod)
-    print(key_array)
+    #print(key_array)
     res = []
     # for i in key_array:
     #    if i not in res:
@@ -73,8 +73,8 @@ def partialencrypt(image, key, column,imagelocation):
             greens = pix[q, r][1] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
             blues = pix[q, r][2] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
             pix[q, r] = (reds, greens, blues)
-    plt.imshow(my_img)
-    plt.show()
+    #plt.imshow(my_img)
+    #plt.show()
 
     #SCRAMBLING
     enc = [[0 for x in range(col)] for y in range(row)]
@@ -103,8 +103,8 @@ def partialencrypt(image, key, column,imagelocation):
         for j in range(size[1]):
             pix[i, j] = (enc[i][j][0], enc[i][j][1], enc[i][j][2])
 
-    plt.imshow(my_img)
-    plt.show()
+    #plt.imshow(my_img)
+    #plt.show()
 
     #RSA
     E,D,N=RSA.gen_RSA_keys()
@@ -148,15 +148,15 @@ def partialencrypt(image, key, column,imagelocation):
             C3 = C3 % 256
             pix[i, j] = (C1, C2, C3)
 
-    plt.imshow(my_img)
-    plt.show()
+    #plt.imshow(my_img)
+    #plt.show()
 
     df = pd.DataFrame(column, columns=['C1', 'C2', 'C3'])
     df.to_parquet(f'{imagelocation}.parquet.gzip', compression='gzip')
 
     my_img.save(image)
 
-    print("Encryption completed")
+    #print("Encryption completed")
 
 
 def encryption(imagelocation, key):

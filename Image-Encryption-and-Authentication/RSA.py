@@ -118,6 +118,7 @@ def gen_RSA_keys():
     while GCD(E, eulerTotient) != 1:
         E = generatePrimeNumber(4)
     D = gcdExtended(E, eulerTotient)
+    print("Public key: ", N)
     print("Private key: ",D)
-    print("Public key: ",N)
+
     return(E,D,N)
