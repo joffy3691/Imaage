@@ -11,23 +11,25 @@ import hashlib
 import pandas as pd
 import numpy as np
 
-def rotateRowRight(arr,d,n,i):
+
+def rotateRowRight(arr, d, n, i):
     arr[i][:] = arr[i][d:n] + arr[i][0:d]
 
 
-def rotateRowLeft(arr,d,n,i):
-    arr[i][:] = arr[i][n-d:n] + arr[i][0:n-d]
+def rotateRowLeft(arr, d, n, i):
+    arr[i][:] = arr[i][n - d:n] + arr[i][0:n - d]
 
 
-def rotateColDown(arr,d,n,j):
-    arr[:,j]=numpy.concatenate((arr[d:n,j],arr[0:d,j]))
-  
+def rotateColDown(arr, d, n, j):
+    arr[:, j] = numpy.concatenate((arr[d:n, j], arr[0:d, j]))
+
 
 def rotateColUp(arr, d, n, j):
-    arr[:,j] = numpy.concatenate((arr[n-d:n,j],arr[0:n-d,j]))
+    arr[:, j] = numpy.concatenate((arr[n - d:n, j], arr[0:n - d, j]))
 
 
-my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/srk.jpg')
+my_img = Image.open(
+    'output.png')
 key = input()
 pix = my_img.load()
 plt.imshow(my_img)
@@ -35,7 +37,7 @@ plt.show()
 size = my_img.size
 row, col = my_img.size[0], my_img.size[1]
 enc = [[0 for x in range(col)] for y in range(row)]
-print(row," ",col)
+print(row, " ", col)
 mod = min(size)
 enc_key = key
 salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
@@ -57,38 +59,19 @@ for i in range(len(key_arra) - 5):
     key_array.append(sum % mod)
 print(key_array)
 
-#for q in range(size[0]):
+# for q in range(size[0]):
 #    for r in range(size[1]):
 #        reds=pix[q,r][0]^(key_array[q*r%key_length]**2%255)
 #        greens=pix[q,r][1]^(key_array[q*r%key_length]**2%255)
 #        blues=pix[q,r][2]^(key_array[q*r%key_length]**2%255)
 #        pix[q,r] = (reds,greens,blues)
-for i in range(row):
-    for j in range(col):
-        enc[i][j]=[pix[i,j][0],pix[i,j][1],pix[i,j][2]]
-for q in range(size[0]):
+for i in range(size[0]):
+    for j in range(size[1]):
+        enc[i][j] = [pix[i, j][0], pix[i, j][1], pix[i, j][2]]
 
-    # for r in range(size[1]):
-    #      reds = pix[q, r][0]
-    #     greens = pix[q, r][1]
-    #     blues = pix[q, r][2]
-    #     reds1 = pix[q, (key_array[q*r%len(key_array)] ** 2)%size[1]][0]
-    #     greens1 = pix[q, (key_array[q*r%len(key_array)] ** 2)%size[1]][1]
-    #     blues1 = pix[q, (key_array[q*r%len(key_array)]**2)%size[1]][2]
-    #     pix[q, (key_array[q * r % len(key_array)] ** 2) % size[1]]=(reds,greens,blues)
-    #     pix[q, r]=(reds1,greens1,blues1)
-    #
-
-    var = key_array[q] % 2
-    # print(size[0])
-    if var:
-        rotateRowLeft(enc, (key_array[q  % len(key_array)] ** 2) % size[1], size[1], q)
-    else:
-        rotateRowRight(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
-
-enc=numpy.array(enc)
+enc = numpy.array(enc)
 # print(enc[:,1])
-for q in range(size[1]):
+for q in range(size[1] - 1, -1, -1):
 
     # for r in range(size[1]):
     #      reds = pix[q, r][0]
@@ -106,12 +89,36 @@ for q in range(size[1]):
     # print(var)
     # print(q)
     if var:
-        rotateColUp(enc, (key_array[q  % len(key_array)] ** 2) % size[0], size[0], q)
-    else:
         rotateColDown(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
+    else:
+        rotateColUp(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
+
+enc=enc.tolist()
+for q in range(size[0] - 1, -1, -1):
+
+    # for r in range(size[1]):
+    #      reds = pix[q, r][0]
+    #     greens = pix[q, r][1]
+    #     blues = pix[q, r][2]
+    #     reds1 = pix[q, (key_array[q*r%len(key_array)] ** 2)%size[1]][0]
+    #     greens1 = pix[q, (key_array[q*r%len(key_array)] ** 2)%size[1]][1]
+    #     blues1 = pix[q, (key_array[q*r%len(key_array)]**2)%size[1]][2]
+    #     pix[q, (key_array[q * r % len(key_array)] ** 2) % size[1]]=(reds,greens,blues)
+    #     pix[q, r]=(reds1,greens1,blues1)
+    #
+
+    var = key_array[q] % 2
+    # print(size[0])
+    if var:
+        rotateRowRight(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
+    else:
+        rotateRowLeft(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
+
+
+
 for i in range(size[0]):
     for j in range(size[1]):
-        pix[i,j]=(enc[i][j][0],enc[i][j][1],enc[i][j][2])
+        pix[i, j] = (enc[i][j][0], enc[i][j][1], enc[i][j][2])
 
 # for q in range(size[0]):
 #     for r in range(size[1]):
@@ -151,4 +158,4 @@ for i in range(size[0]):
 
 plt.imshow(my_img)
 plt.show()
-my_img.save('output.png') # Save the modified pixels as .png
+my_img.save('decrypted.png')   # Save the modified pixels as .png
