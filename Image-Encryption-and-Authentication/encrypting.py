@@ -1,13 +1,9 @@
-import os, binascii
+import binascii
 from backports.pbkdf2 import pbkdf2_hmac
 import matplotlib.pyplot as plt
 from PIL import Image
-import json
-import piexif
-import piexif.helper
-import hashlib
 import pandas as pd
-import numpy as np
+import numpy
 import random
 import cv2
 import cvlib as cv
@@ -16,7 +12,20 @@ import RSA
 # cv2_imshow(my_img)
 # plt.imshow(my_img)
 # pix = my_img.load()
-enc = [[0 for x in range(3000)] for y in range(3000)]
+def rotateRowRight(arr, d, n, i):
+    arr[i][:] = arr[i][d:n] + arr[i][0:d]
+
+
+def rotateRowLeft(arr, d, n, i):
+    arr[i][:] = arr[i][n - d:n] + arr[i][0:n - d]
+
+
+def rotateColDown(arr, d, n, j):
+    arr[:, j] = numpy.concatenate((arr[d:n, j], arr[0:d, j]))
+
+
+def rotateColUp(arr, d, n, j):
+    arr[:, j] = numpy.concatenate((arr[n - d:n, j], arr[0:n - d, j]))
 
 
 def partialencrypt(image, key, column,imagelocation):
@@ -25,6 +34,8 @@ def partialencrypt(image, key, column,imagelocation):
     size = my_img.size
     row, col = my_img.size[0], my_img.size[1]
     mod = min(size)
+
+    #PBKDF2
     enc_key = key
     salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
     passwd = enc_key.encode("utf8")
@@ -49,6 +60,8 @@ def partialencrypt(image, key, column,imagelocation):
     #    if i not in res:
     #        res.append(i)
 
+
+    #CBC
     for q in range(size[0]):
         for r in range(size[1]):
             i = 1
@@ -62,6 +75,38 @@ def partialencrypt(image, key, column,imagelocation):
             pix[q, r] = (reds, greens, blues)
     plt.imshow(my_img)
     plt.show()
+
+    #SCRAMBLING
+    enc = [[0 for x in range(col)] for y in range(row)]
+    for i in range(row):
+        for j in range(col):
+            enc[i][j] = [pix[i, j][0], pix[i, j][1], pix[i, j][2]]
+    for i in range(2):
+        if (i >= 1):
+            enc = enc.tolist()
+        for q in range(size[0]):
+            var = key_array[q] % 2
+            if var:
+                rotateRowLeft(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
+            else:
+                rotateRowRight(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
+
+        enc = numpy.array(enc)
+
+        for q in range(size[1]):
+            var = key_array[q] % 2
+            if var:
+                rotateColUp(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
+            else:
+                rotateColDown(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
+    for i in range(size[0]):
+        for j in range(size[1]):
+            pix[i, j] = (enc[i][j][0], enc[i][j][1], enc[i][j][2])
+
+    plt.imshow(my_img)
+    plt.show()
+
+    #RSA
     E,D,N=RSA.gen_RSA_keys()
     rsa_hashing = {}
     rsa_keys = []
@@ -96,7 +141,6 @@ def partialencrypt(image, key, column,imagelocation):
             # C1 = pow(r, E, N)
             # C2 = pow(g, E, N)
             # C3 = pow(b, E, N)
-            enc[i][j] = [C1, C2, C3]
             column.append((C1, C2, C3))
             # userdata=userdata+str(C1)+","+str(C2)+","+str(C3)+","
             C1 = C1 % 256
