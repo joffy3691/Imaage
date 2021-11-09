@@ -3,14 +3,7 @@ import os.path
 import PIL.Image
 import io
 import base64
-import hashes
-import cv2
-import matplotlib.pyplot as plt
-import cvlib as cv
 import time
-import json
-import piexif
-import piexif.helper
 import encrypting
 import decrypting
 def convert_to_bytes(file_or_bytes, resize=None):
@@ -40,13 +33,7 @@ left_col = [[sg.Text('Folder'), sg.In(size=(25,1), enable_events=True ,key='-FOL
             [sg.Text('Secret Key'),sg.In(key='key', size=(10,1))],
             [sg.Text('Public Key'),sg.In(key='Publickey', size=(50,1))],
             [sg.Text('RSA Key'),sg.In(key='Rsakey', size=(50,1))],
-            [sg.Button('Encrypt'),sg.Button('Decrypt')],
-            [sg.Text('Mode'),sg.Drop(values=('Secure', 'Fast'),key='mode')],
-            [sg.Text('avg-Hash calculated: '), sg.Text(size=(15,1), key='-OUTPUT1-')],
-            [sg.Text('p-Hash calculated: '), sg.Text(size=(15,1), key='-OUTPUT2-')],
-            [sg.Text('d-Hash calculated: '), sg.Text(size=(15,1), key='-OUTPUT3-')],
-            [sg.Text('w-Hash calculated: '), sg.Text(size=(15,1), key='-OUTPUT4-')],
-            [sg.Text('color-Hash calculated: '), sg.Text(size=(15,1), key='-OUTPUT5-')]]
+            [sg.Button('Encrypt'),sg.Button('Decrypt')]]
 
 
 images_col = [[sg.Text('You choose from the list:')],
@@ -92,11 +79,6 @@ while True:
         try:
             filename = os.path.join(values['-FOLDER-'], values['-FILE LIST-'][0])
             window['-TOUT-'].update(filename)
-            window['-OUTPUT1-'].update(hashes.ahash(values['-FILE LIST-'][0]))
-            window['-OUTPUT2-'].update(hashes.phash(values['-FILE LIST-'][0]))
-            window['-OUTPUT3-'].update(hashes.dhash(values['-FILE LIST-'][0]))
-            window['-OUTPUT4-'].update(hashes.whash(values['-FILE LIST-'][0]))
-            window['-OUTPUT5-'].update(hashes.chash(values['-FILE LIST-'][0]))
             new_size = None
             window['-IMAGE-'].update(data=convert_to_bytes(filename, resize=new_size))
         except Exception as E:
