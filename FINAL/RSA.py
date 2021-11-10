@@ -1,18 +1,5 @@
-import cv2
-import numpy as np
-import matplotlib.pyplot as plt
-from PIL import Image
-
-my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/lena.png')
-# cv2_imshow(my_img)
-plt.imshow(my_img)
-pix = my_img.load()
-# RSA
-
 # STEP 1: Generate Two Large Prime Numbers (p,q) randomly
 from random import randrange, getrandbits
-
-
 def power(a, d, n):
     ans = 1;
     while d != 0:
@@ -20,11 +7,6 @@ def power(a, d, n):
             ans = ((ans % n) * (a % n)) % n
         a = ((a % n) * (a % n)) % n
         d >>= 1
-    return ans;
-
-def poer(a, d, n):
-    abc=pow(a,d)
-    ans = abc%n;
     return ans;
 
 def MillerRabin(N, d):
@@ -77,33 +59,14 @@ def generatePrimeNumber(length):
     return A
 
 
-length = 20
-P = generatePrimeNumber(length)
-Q = generatePrimeNumber(length)
-#poer doesnt work if P and Q are equal
-print(P)
-print(Q)
-
 # Step 2: Calculate N=P*Q and Euler Totient Function = (P-1)*(Q-1)
-N = P * Q
-eulerTotient = (P - 1) * (Q - 1)
-print(N)
-print(eulerTotient)
-
 
 # Step 3: Find E such that GCD(E,eulerTotient)=1(i.e., e should be co-prime) such that it satisfies this condition:-  1<E<eulerTotient
 
 def GCD(a, b):
     if a == 0:
-        return b;
+        return b
     return GCD(b % a, a)
-
-
-E = generatePrimeNumber(4)
-while GCD(E, eulerTotient) != 1:
-    E = generatePrimeNumber(4)
-print(E)
-
 
 # Step 4: Find D.
 # For Finding D: It must satisfies this property:-  (D*E)Mod(eulerTotient)=1;
@@ -143,40 +106,19 @@ def gcdExtended(E, eulerTotient):
 
     return D
 
+def gen_RSA_keys():
+    length = 20
+    P = generatePrimeNumber(length)
+    Q = generatePrimeNumber(length)
+    while (Q == P):
+        Q = generatePrimeNumber(length)
+    N = P * Q
+    eulerTotient = (P - 1) * (Q - 1)
+    E = generatePrimeNumber(4)
+    while GCD(E, eulerTotient) != 1:
+        E = generatePrimeNumber(4)
+    D = gcdExtended(E, eulerTotient)
+    print("Public key: ", N)
+    print("Private key: ",D)
 
-D = gcdExtended(E, eulerTotient)
-print(D)
-
-row, col = my_img.size[0], my_img.size[1]
-enc = [[0 for x in range(3000)] for y in range(3000)]
-
-# Step 5: Encryption
-size = my_img.size
-for i in range(row):
-    for j in range(col):
-        r, g, b = pix[i, j]
-        C1 = pow(r, E, N)
-        C2 = pow(g, E, N)
-        C3 = pow(b, E, N)
-        enc[i][j] = [C1, C2, C3]
-        C1 = C1 % 256
-        C2 = C2 % 256
-        C3 = C3 % 256
-        pix[i, j] = (C1, C2, C3)
-        #print(pix[i,j])
-
-plt.imshow(my_img)
-plt.show()
-
-# Step 6: Decryption
-for i in range(row):
-    for j in range(col):
-        r, g, b = enc[i][j]
-        M1 = pow(r, D, N)
-        M2 = pow(g, D, N)
-        M3 = pow(b, D, N)
-        pix[i, j] = (M1, M2, M3)
-        #print(pix[i,j])
-
-plt.imshow(my_img)
-plt.show()
+    return(E,D,N)
