@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 
-my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/lena.png')
+my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Experiment/whatsapp.png')
 # cv2_imshow(my_img)
 plt.imshow(my_img)
 pix = my_img.load()

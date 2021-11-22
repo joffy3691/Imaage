@@ -3,7 +3,7 @@ import pandas as pd
 import random
 import RSA
 import matplotlib.pyplot as plt
-image="C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/tom.bmp"
+image="C:/Users/vishn/PycharmProjects/imo/dtjdtg/FINAL/1628574184_sports-9.jpg"
 imagelocation="output.jpg"
 column=[]
 my_img = Image.open(image)
