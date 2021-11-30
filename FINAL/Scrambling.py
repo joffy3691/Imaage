@@ -27,7 +27,7 @@ def rotateColUp(arr, d, n, j):
     arr[:,j] = numpy.concatenate((arr[n-d:n,j],arr[0:n-d,j]))
 
 
-my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Experiment/whatsapp.png')
+my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Experiment/lena.png')
 key = input()
 pix = my_img.load()
 plt.imshow(my_img)
