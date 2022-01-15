@@ -156,4 +156,4 @@ def decryption(imagelocation,key, rsa_key, public_key):
     cv2.imwrite(imagelocation, im)
     #print("decryption over")
 
-partialdecrypt("enc_image.png", "Vishnu", 354384911077, 460701767039,"a")
+partialdecrypt("enc_image.png", "Vishnu", 40084729379, 440933357303,"a")

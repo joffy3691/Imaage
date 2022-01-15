@@ -181,4 +181,4 @@ def encryption(imagelocation, key):
 column = []
 column.append((0, 0, 0))
 column.append((0, 0, 0))
-partialencrypt("lena.png","Vishnu",column,"a")
+partialencrypt("house.tiff","Vishnu",column,"a")
