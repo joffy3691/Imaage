@@ -8,6 +8,7 @@ import random
 import cv2
 import cvlib as cv
 import RSA
+import time
 # my_img = Image.open('/home/pratyush/Downloads/Imaage-main/Experiment/PROFILE.jpeg')
 # cv2_imshow(my_img)
 # plt.imshow(my_img)
@@ -152,9 +153,9 @@ def partialencrypt(image, key, column,imagelocation):
     #plt.show()
 
     df = pd.DataFrame(column, columns=['C1', 'C2', 'C3'])
-    df.to_parquet(f'{imagelocation}.parquet.gzip', compression='gzip')
+    df.to_parquet(f'{imagelocation}.tif.parquet.gzip', compression='gzip')
 
-    my_img.save("enc_image.png")
+    my_img.save(f'{imagelocation}.tif')
 
     #print("Encryption completed")
 
@@ -181,4 +182,7 @@ def encryption(imagelocation, key):
 column = []
 column.append((0, 0, 0))
 column.append((0, 0, 0))
-partialencrypt("house.tiff","Vishnu",column,"a")
+tic = time.perf_counter()
+partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/test1.tiff","ABCD",column,"enc_image")
+toc = time.perf_counter()
+print(f"Finished encryption in {toc - tic:0.4f} seconds")

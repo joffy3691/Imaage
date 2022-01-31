@@ -9,6 +9,7 @@ import hashlib
 import pandas as pd
 import numpy
 import cv2
+import time
 import cvlib as cv
 def rotateRowRight(arr, d, n, i):
     arr[i][:] = arr[i][d:n] + arr[i][0:d]
@@ -137,7 +138,7 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     # plt.imshow(my_img)
     # plt.show()
 
-    my_img.save("dec_image.png")
+    my_img.save("dec_image.tif")
 def decryption(imagelocation,key, rsa_key, public_key):
     im = cv2.imread(imagelocation)
     data = pd.read_parquet(f'{imagelocation}.parquet.gzip')
@@ -156,4 +157,8 @@ def decryption(imagelocation,key, rsa_key, public_key):
     cv2.imwrite(imagelocation, im)
     #print("decryption over")
 
-partialdecrypt("enc_image.png", "Vishnu", 40084729379, 440933357303,"a")
+loc="enc_image.tif"
+tic = time.perf_counter()
+partialdecrypt(loc, "ABCD", 229097876377, 595656051449,loc)
+toc = time.perf_counter()
+print(f"Finished encryption in {toc - tic:0.4f} seconds")

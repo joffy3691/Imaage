@@ -23,7 +23,8 @@ def rgbhistogram(loc,output):
     plt2.hist(im2.flatten(), 128)
     plt2.hist(im3.flatten(), 128)
     plt2.hist(im4.flatten(), 128)
-    plt2.savefig(output+"/rgbhisto.png")
+    plt2.show()
+    plt2.savefig(output+".png")
 
 
 def rgbhistogram2(loc,output):
@@ -38,7 +39,8 @@ def rgbhistogram2(loc,output):
     plt2.hist(im2.flatten(), 128)
     plt2.hist(im3.flatten(), 128)
     plt2.hist(im4.flatten(), 128)
-    plt2.savefig(output+"/rgbhisto2.png")
+    plt2.show()
+    plt2.savefig(output+".png")
 
 
 def redhistogram(loc):

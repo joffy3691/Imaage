@@ -39,14 +39,15 @@ def coplot_horizontal(loc,output):
     plt.scatter(list_of_pixels_of_x,list_of_pixels_of_y,  label='Pixel',color='k',s=2,edgecolors='r')
     plt.xlabel('Pixel value on location(x,y)')
     plt.ylabel('Pixel value on location(x+1,y)')
-    plt.title("correlation coefficient graph")
+    plt.title("Horizontal correlation coefficient graph")
     plt.legend()
-    plt.savefig(output+"/coplot_horizontal.png")
+    plt.savefig(output+".png")
+    plt.show()
 
 #plt.savefig("fog.png")
 
 
-def coplot_vertical(loc):
+def coplot_vertical(loc,output):
     image = Image.open(loc)
     pixels = image.load()
     list_of_pixels_of_x = []
@@ -72,6 +73,7 @@ def coplot_vertical(loc):
     plt.scatter(list_of_pixels_of_x, list_of_pixels_of_y, label='Pixel', color='k', s=2, edgecolors='r')
     plt.xlabel('Pixel value on location(x,y)')
     plt.ylabel('Pixel value on location(x+1,y)')
-    plt.title("correlation coefficient graph")
+    plt.title("Vertical correlation coefficient graph")
     plt.legend()
+    plt.savefig(output + ".png")
     plt.show()
