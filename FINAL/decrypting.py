@@ -138,7 +138,7 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     # plt.imshow(my_img)
     # plt.show()
 
-    my_img.save("dec_image.tif")
+    my_img.save("dec_image.jpg")
 def decryption(imagelocation,key, rsa_key, public_key):
     im = cv2.imread(imagelocation)
     data = pd.read_parquet(f'{imagelocation}.parquet.gzip')
@@ -157,8 +157,8 @@ def decryption(imagelocation,key, rsa_key, public_key):
     cv2.imwrite(imagelocation, im)
     #print("decryption over")
 
-loc="enc_image.tif"
+loc="enc_image.jpg"
 tic = time.perf_counter()
-partialdecrypt(loc, "ABCD", 229097876377, 595656051449,loc)
+partialdecrypt(loc, "ABCD", 566832752197, 614070389237,loc)
 toc = time.perf_counter()
 print(f"Finished encryption in {toc - tic:0.4f} seconds")

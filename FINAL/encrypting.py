@@ -153,9 +153,9 @@ def partialencrypt(image, key, column,imagelocation):
     #plt.show()
 
     df = pd.DataFrame(column, columns=['C1', 'C2', 'C3'])
-    df.to_parquet(f'{imagelocation}.tif.parquet.gzip', compression='gzip')
+    df.to_parquet(f'{imagelocation}.jpg.parquet.gzip', compression='gzip')
 
-    my_img.save(f'{imagelocation}.tif')
+    my_img.save(f'{imagelocation}.jpg')
 
     #print("Encryption completed")
 
@@ -183,6 +183,6 @@ column = []
 column.append((0, 0, 0))
 column.append((0, 0, 0))
 tic = time.perf_counter()
-partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Image-Encryption-and-Authentication/test1.tiff","ABCD",column,"enc_image")
+partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Images/JPEG/Jpeg 8-bit/4.1.04.jpg","ABCD",column,"enc_image")
 toc = time.perf_counter()
 print(f"Finished encryption in {toc - tic:0.4f} seconds")
