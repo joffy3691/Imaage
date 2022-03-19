@@ -32,44 +32,15 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     size = my_img.size
     mod = min(size)
     row, col = my_img.size[0], my_img.size[1]
+
     data = pd.read_parquet(f'{imagelocation}.parquet.gzip')
     array = data.to_numpy()
-    array1=array[2:88]
-    array1=array1.flatten()
-    array1=array1[:-2].tolist()
-    array=array[88:]
+    array1 = array[2:88]
+    array1 = array1.flatten()
+    array1 = array1[:-2].tolist()
+    array = array[88:]
     array = array.reshape(row, col, 3)
-    """for i in range(len(array)):
-        for j in range(col):
-            print(array[i][j])"""
-
-    #RSA
-    D = int(rsa_key)
-    N = int(public_key)
-    # print("D decryption = ", D)
-    rsa_keys1 =array1
-    rsa_key_position1 = {}
-
-    for i in range(256):
-        rsa_key_position1[i] = rsa_keys1[i]
-
-    rsa_hashing1 = {}
-    for i in range(256):
-        C1 = pow(rsa_keys1[i], D, N)
-        rsa_hashing1[rsa_keys1[i]] = C1
-
-    for i in range(row):
-        for j in range(col):
-            r, g, b = array[i][j]
-            M1 = rsa_hashing1.get(rsa_key_position1.get(r))
-            M2 = rsa_hashing1.get(rsa_key_position1.get(g))
-            M3 = rsa_hashing1.get(rsa_key_position1.get(b))
-            pix[i, j] = (M1 % 256, M2 % 256, M3 % 256)
-
-    # plt.imshow(my_img)
-    # plt.show()
-
-    #PBKDF2
+    # PBKDF2
     enc_key = key
     salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
     passwd = enc_key.encode("utf8")
@@ -92,6 +63,52 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
         if i not in res:
             res.append(i)
     # print(key_array)
+
+    """for i in range(len(array)):
+        for j in range(col):
+            print(array[i][j])"""
+
+    #RSA
+    rsa_map = {}
+    counter = 0
+    for i in range(len(key_array)):
+
+        if counter >= 256:
+            break
+
+        special_key = key_array[i] * key_array[i + 1]
+
+        if special_key not in rsa_map:
+            rsa_map[special_key] = counter
+            counter += 1
+
+    D = int(rsa_key)
+    N = int(public_key)
+    rsa_keys1 = array1
+    rsa_key_position1 = {}
+
+    for i in range(256):
+        rsa_key_position1[i] = rsa_keys1[i]
+
+    rsa_hashing1 = {}
+    for i in range(256):
+        C1 = pow(rsa_keys1[i], D, N)
+        rsa_hashing1[rsa_keys1[i]] = int(rsa_map[C1])
+
+    counter = 0
+    rgb = set()
+    for i in range(row):
+        for j in range(col):
+            r, g, b = array[i][j]
+            M1 = rsa_hashing1.get(rsa_key_position1.get(r))
+            M2 = rsa_hashing1.get(rsa_key_position1.get(g))
+            M3 = rsa_hashing1.get(rsa_key_position1.get(b))
+            pix[i, j] = (M1 % 256, M2 % 256, M3 % 256)
+
+    plt.imshow(my_img)
+    plt.show()
+
+
 
     #SCRAMBLING
     enc = [[0 for x in range(col)] for y in range(row)]
@@ -123,20 +140,49 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     # plt.show()
 
     #CBC
-    for q in range(size[0] - 1, -1, -1):
-        for r in range(size[1] - 1, -1, -1):
-            i = 1
-            reds = pix[q, r][0] ^ pix[(q - i) % size[0], (r - i) % size[1]][0]
-            greens = pix[q, r][1] ^ pix[(q - i) % size[0], (r - i) % size[1]][1]
-            blues = pix[q, r][2] ^ pix[(q - i) % size[0], (r - i) % size[1]][2]
+    total_size = col * row
+    all_pixels = []
+    random_ordering = []
+    for i in range(0, total_size):
+        all_pixels.append(i)
+
+    for i in range(0, total_size):
+        pos = key_array[i % len(key_array)] ** 3 % (len(all_pixels))
+        random_ordering.append(all_pixels[pos])
+        # print(random_ordering[i])
+        all_pixels.pop(pos)
+
+    print(len(random_ordering), " ", total_size)
+    print(random_ordering)
+    for i in range(total_size-1,-1,-1):
+        if(i==0):
+            pos = random_ordering[0]
+            q = int(pos / size[0])
+            r = pos % size[1]
+            reds = pix[q, r][0] ^ (key_array[0] ** 2 % 255)
+            greens = pix[q, r][1] ^ (key_array[0] ** 2 % 255)
+            blues = pix[q, r][2] ^ (key_array[0] ** 2 % 255)
+            pix[q, r] = (reds, greens, blues)
+
+        else:
+            pos=random_ordering[i]
+            prev_pos=random_ordering[i-1]
+            q=int(pos/row)
+            r=pos%col
+            randomrow=int(prev_pos/size[0])
+            randomcol=prev_pos%size[1]
+            # print(str(q)+" "+str(r)+" "+str(randomcol)+" "+str(randomcol))
+            reds = pix[q, r][0] ^ pix[randomrow, randomcol][0]
+            greens = pix[q, r][1] ^ pix[randomrow, randomcol][1]
+            blues = pix[q, r][2] ^ pix[randomrow, randomcol][2]
             pix[q, r] = (reds, greens, blues)
             reds = pix[q, r][0] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
             greens = pix[q, r][1] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
             blues = pix[q, r][2] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
             pix[q, r] = (reds, greens, blues)
-
     plt.imshow(my_img)
     plt.show()
+
 
     my_img.save("dec_image.jpg")
 def decryption(imagelocation,key, rsa_key, public_key):
@@ -159,6 +205,6 @@ def decryption(imagelocation,key, rsa_key, public_key):
 
 loc="enc_image.jpg"
 tic = time.perf_counter()
-partialdecrypt(loc, "ABCD", 380649274403, 523394270951,loc)
+partialdecrypt(loc, "ABCD", 194333811397, 315793567517,loc)
 toc = time.perf_counter()
 print(f"Finished encryption in {toc - tic:0.4f} seconds")
