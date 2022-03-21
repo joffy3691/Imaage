@@ -3,7 +3,7 @@ from backports.pbkdf2 import pbkdf2_hmac
 import matplotlib.pyplot as plt
 from PIL import Image
 import hashlib
-my_img = Image.open('output.png')
+my_img = Image.open('C:/Users/DELL/Downloads/Imaage/Enc images/JPG_8bit/dec_image_jpg_8bit_1.jpg')
 # cv2_imshow(my_img)
 plt.imshow(my_img)
 pix = my_img.load()
@@ -46,11 +46,11 @@ for q in range(size[0]):
         reds = pix[q, r][0] ^ (key_array[q*r%len(key_array)] ** 2 % 255)
         greens = pix[q, r][1] ^ (key_array[q*r%len(key_array)] ** 2 % 255)
         blues = pix[q, r][2] ^ (key_array[q*r%len(key_array)] ** 2 % 255)
-        print(key_array[q*r%len(key_array)])
+        # print(key_array[q*r%len(key_array)])
         pix[q, r] = (reds, greens, blues)
 plt.imshow(my_img)
 plt.show()
-my_img.save('output.png')
+my_img.save('output1.png')
 
 key = input()
 enc_key = key

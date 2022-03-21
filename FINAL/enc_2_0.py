@@ -231,6 +231,6 @@ column = []
 column.append((0, 0, 0))
 column.append((0, 0, 0))
 tic = time.perf_counter()
-partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Images/JPEG/Jpeg 8-bit/4.2.01.jpg","ABCD",column,"enc_image")
+partialencrypt("C:/Users/DELL/Downloads/Imaage/Enc images/JPG_8bit/dec_image_jpg_8bit_1.jpg","ABCD",column,"enc_image12")
 toc = time.perf_counter()
 print(f"Finished encryption in {toc - tic:0.4f} seconds")

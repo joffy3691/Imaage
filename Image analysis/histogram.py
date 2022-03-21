@@ -98,3 +98,4 @@ def bluehistogram(loc):
 # # hist(im4.flatten(),128)
 # # #
 # show()
+rgbhistogram('C:/Users/DELL/Downloads/Imaage/Image-Encryption-and-Authentication/Pratyush.png','ab')
