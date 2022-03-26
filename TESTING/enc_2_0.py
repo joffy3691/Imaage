@@ -109,33 +109,6 @@ def partialencrypt(image, key, column,imagelocation):
     #plt.imshow(my_img)
     #plt.show()
 
-    #SCRAMBLING
-    enc = [[0 for x in range(col)] for y in range(row)]
-    for i in range(row):
-        for j in range(col):
-            enc[i][j] = [pix[i, j][0], pix[i, j][1], pix[i, j][2]]
-    for i in range(2):
-        if (i >= 1):
-            enc = enc.tolist()
-        for q in range(size[0]):
-            var = key_array[q] % 2
-            if var:
-                rotateRowLeft(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
-            else:
-                rotateRowRight(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
-
-        enc = numpy.array(enc)
-
-        for q in range(size[1]):
-            var = key_array[q] % 2
-            if var:
-                rotateColUp(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
-            else:
-                rotateColDown(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
-    for i in range(size[0]):
-        for j in range(size[1]):
-            pix[i, j] = (enc[i][j][0], enc[i][j][1], enc[i][j][2])
-
     #plt.imshow(my_img)
     #plt.show()
 
@@ -203,6 +176,33 @@ def partialencrypt(image, key, column,imagelocation):
     df = pd.DataFrame(column, columns=['C1', 'C2', 'C3'])
     df.to_parquet(f'{imagelocation}.jpg.parquet.gzip', compression='gzip')
 
+    # SCRAMBLING
+    enc = [[0 for x in range(col)] for y in range(row)]
+    for i in range(row):
+        for j in range(col):
+            enc[i][j] = [pix[i, j][0], pix[i, j][1], pix[i, j][2]]
+    for i in range(2):
+        if (i >= 1):
+            enc = enc.tolist()
+        for q in range(size[0]):
+            var = key_array[q] % 2
+            if var:
+                rotateRowLeft(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
+            else:
+                rotateRowRight(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
+
+        enc = numpy.array(enc)
+
+        for q in range(size[1]):
+            var = key_array[q] % 2
+            if var:
+                rotateColUp(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
+            else:
+                rotateColDown(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
+    for i in range(size[0]):
+        for j in range(size[1]):
+            pix[i, j] = (enc[i][j][0], enc[i][j][1], enc[i][j][2])
+
     my_img.save(f'{imagelocation}.jpg')
 
     #print("Encryption completed")
@@ -231,6 +231,6 @@ column = []
 column.append((0, 0, 0))
 column.append((0, 0, 0))
 tic = time.perf_counter()
-partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Enc images/JPG_8bit/dec_image_jpg_8bit_1.jpg","ABCD",column,"propenc_image")
+partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Enc images/JPG_8bit/dec_image_jpg_8bit_2.jpg","ABCD",column,"propenc_image")
 toc = time.perf_counter()
 print(f"Finished encryption in {toc - tic:0.4f} seconds")

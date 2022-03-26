@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from PIL import Image
 
-my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Enc images/JPG_8bit/dec_image_jpg_8bit_1.jpg')
+my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Enc images/JPG_8bit/dec_image_jpg_8bit_2.jpg')
 # cv2_imshow(my_img)
 plt.imshow(my_img)
 pix = my_img.load()
@@ -167,7 +167,7 @@ for i in range(row):
 
 plt.imshow(my_img)
 plt.show()
-my_img.save('RSAoutput1.png')
+my_img.save('RSAoutput1.jpg')
 
 # Step 6: Decryption
 for i in range(row):

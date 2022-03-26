@@ -67,6 +67,34 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     """for i in range(len(array)):
         for j in range(col):
             print(array[i][j])"""
+    # SCRAMBLING
+    enc = [[0 for x in range(col)] for y in range(row)]
+    for i in range(size[0]):
+        for j in range(size[1]):
+            enc[i][j] = [pix[i, j][0], pix[i, j][1], pix[i, j][2]]
+    for i in range(2):
+        enc = numpy.array(enc)
+        for q in range(size[1] - 1, -1, -1):
+            var = key_array[q] % 2
+            if var:
+                rotateColDown(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
+            else:
+                rotateColUp(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
+
+        enc = enc.tolist()
+        for q in range(size[0] - 1, -1, -1):
+            var = key_array[q] % 2
+            if var:
+                rotateRowRight(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
+            else:
+                rotateRowLeft(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
+
+    for i in range(size[0]):
+        for j in range(size[1]):
+            pix[i, j] = (enc[i][j][0], enc[i][j][1], enc[i][j][2])
+
+    # plt.imshow(my_img)
+    # plt.show()
 
     #RSA
     rsa_map = {}
@@ -108,36 +136,6 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     plt.imshow(my_img)
     plt.show()
 
-
-
-    #SCRAMBLING
-    enc = [[0 for x in range(col)] for y in range(row)]
-    for i in range(size[0]):
-        for j in range(size[1]):
-            enc[i][j] = [pix[i, j][0], pix[i, j][1], pix[i, j][2]]
-    for i in range(2):
-        enc = numpy.array(enc)
-        for q in range(size[1] - 1, -1, -1):
-            var = key_array[q] % 2
-            if var:
-                rotateColDown(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
-            else:
-                rotateColUp(enc, (key_array[q % len(key_array)] ** 2) % size[0], size[0], q)
-
-        enc = enc.tolist()
-        for q in range(size[0] - 1, -1, -1):
-            var = key_array[q] % 2
-            if var:
-                rotateRowRight(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
-            else:
-                rotateRowLeft(enc, (key_array[q % len(key_array)] ** 2) % size[1], size[1], q)
-
-    for i in range(size[0]):
-        for j in range(size[1]):
-            pix[i, j] = (enc[i][j][0], enc[i][j][1], enc[i][j][2])
-
-    # plt.imshow(my_img)
-    # plt.show()
 
     #CBC
     total_size = col * row
@@ -205,6 +203,6 @@ def decryption(imagelocation,key, rsa_key, public_key):
 
 loc="propenc_image.jpg"
 tic = time.perf_counter()
-partialdecrypt(loc, "ABCD", 175755624389, 571207324549,loc)
+partialdecrypt(loc, "ABCD", 113349540731, 415616272147,loc)
 toc = time.perf_counter()
 print(f"Finished encryption in {toc - tic:0.4f} seconds")

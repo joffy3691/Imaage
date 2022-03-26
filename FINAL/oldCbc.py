@@ -26,12 +26,12 @@ key_array = []
 key_sum = sum(key_array)
 key_arra = []
 for key in key:
-    key_arra.append(ord(key) % mod)
-for i in range(len(key_arra) - 5):
-    # adding the alternate numbers
-    sum = key_arra[i] + key_arra[i + 1]+key_arra[i + 2]+key_arra[i + 3]+key_arra[i + 4]+key_arra[i + 5]
-    key_array.append(sum % mod)
-print(key_array)
+    key_array.append(ord(key) % mod)
+# for i in range(len(key_arra) - 5):
+#     # adding the alternate numbers
+#     sum = key_arra[i] + key_arra[i + 1]+key_arra[i + 2]+key_arra[i + 3]+key_arra[i + 4]+key_arra[i + 5]
+#     key_array.append(sum % mod)
+# print(key_array)
 res = []
 #for i in key_array:
 #    if i not in res:
@@ -50,7 +50,7 @@ for q in range(size[0]):
         pix[q, r] = (reds, greens, blues)
 plt.imshow(my_img)
 plt.show()
-my_img.save('CBCoutput1.png')
+my_img.save('CBCoutput.png')
 
 key = input()
 enc_key = key
@@ -65,11 +65,11 @@ key_length = len(key)
 key_array = []
 key_arra = []
 for key in key:
-    key_arra.append(ord(key) % mod)
-for i in range(len(key_arra) - 5):
-    # adding the alternate numbers
-    sum = key_arra[i] + key_arra[i + 1]+key_arra[i + 2]+key_arra[i + 3]+key_arra[i + 4]+key_arra[i + 5]
-    key_array.append(sum % mod)
+    key_array.append(ord(key) % mod)
+# for i in range(len(key_arra) - 5):
+#     # adding the alternate numbers
+#     sum = key_arra[i] + key_arra[i + 1]+key_arra[i + 2]+key_arra[i + 3]+key_arra[i + 4]+key_arra[i + 5]
+#     key_array.append(sum % mod)
 res = []
 for i in key_array:
     if i not in res:
