@@ -17,12 +17,13 @@ from uaci import rootmeansquareerror,uaci
 from uaci2 import uaci2
 from psnr import RMSE
 
-Dec_image="C:/Users/vishn/PycharmProjects/imo/dtjdtg/Enc images/JPG_8bit/dec_image_jpg_8bit_2.jpg"
-Enc_image="C:/Users/vishn/PycharmProjects/imo/dtjdtg/TESTING/propenc_image.jpg"
-# print("RMSE :" + str(rootmeansquareerror(Dec_image,Enc_image)))
+Dec_image="C:/Users/vishn/PycharmProjects/imo/dtjdtg/Review 3/dec_image.png"
+Enc_image="C:/Users/vishn/PycharmProjects/imo/dtjdtg/Review 3/enc_image.png"
+print("RMSE :" + str(rootmeansquareerror(Dec_image,Enc_image)))
 print("NPCR :"+str(npcrv(Dec_image,Enc_image)))
-print("UCAI :" + str(uaci(Dec_image,Enc_image)))
-# print("UCAI :" + str(uaci2(Dec_image,Enc_image)))
+# print("UCAI :" + str(uaci(Dec_image,Enc_image)))
+
+print("UCAI :" + str(uaci2(Dec_image,Enc_image)))
 RMSE(Dec_image,Enc_image)
 
 

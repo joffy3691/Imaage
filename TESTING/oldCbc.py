@@ -3,7 +3,7 @@ from backports.pbkdf2 import pbkdf2_hmac
 import matplotlib.pyplot as plt
 from PIL import Image
 import hashlib
-my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Enc images/JPG_8bit/dec_image_jpg_8bit_2.jpg')
+my_img = Image.open('C:/Users/vishn/PycharmProjects/imo/dtjdtg/Test_images/bmp/4.1.01.bmp')
 # cv2_imshow(my_img)
 plt.imshow(my_img)
 pix = my_img.load()
@@ -50,7 +50,7 @@ for q in range(size[0]):
         pix[q, r] = (reds, greens, blues)
 plt.imshow(my_img)
 plt.show()
-my_img.save('CBCoutput.jpg')
+my_img.save('CBCoutput.bmp')
 
 key = input()
 enc_key = key
