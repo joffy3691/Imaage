@@ -38,7 +38,7 @@ def partialencrypt(image, key, column,imagelocation):
     pix = my_img.load()
     size = my_img.size
     row, col = my_img.size[0], my_img.size[1]
-    print(row, col)
+    # print(row, col)
     mod = min(size)
 
     #PBKDF2
@@ -80,8 +80,8 @@ def partialencrypt(image, key, column,imagelocation):
         # print(random_ordering[i])
         all_pixels.pop(pos)
 
-    print(len(random_ordering), " ", total_size)
-    print(random_ordering)
+    # print(len(random_ordering), " ", total_size)
+    # print(random_ordering)
     for i in range(0, total_size):
         if (i == 0):
             pos = random_ordering[0]
@@ -137,7 +137,7 @@ def partialencrypt(image, key, column,imagelocation):
 
     # E, D, N = RSA.gen_RSA_keys()
     res = [rsa_map[i]%256 for i in rsa_map]
-    print(len(set(res)))
+    # print(len(set(res)))
 
     N= 454650419441
     D= 349730043757
@@ -175,7 +175,7 @@ def partialencrypt(image, key, column,imagelocation):
             # C1 = pow(r, E, N)
             # C2 = pow(g, E, N)
             # C3 = pow(b, E, N)
-            column.append((C1, C2, C3))
+            # column.append((C1, C2, C3))
             # userdata=userdata+str(C1)+","+str(C2)+","+str(C3)+","
             C1 = C1 % 256
             C2 = C2 % 256
@@ -214,6 +214,8 @@ def partialencrypt(image, key, column,imagelocation):
         for j in range(size[1]):
             pix[i, j] = (enc[i][j][0], enc[i][j][1], enc[i][j][2])
 
+    # plt.imshow(my_img)
+    # plt.show()
     my_img.save(f'{imagelocation}.bmp')
 
     #print("Encryption completed")
@@ -242,6 +244,6 @@ column = []
 column.append((0, 0, 0))
 column.append((0, 0, 0))
 tic = time.perf_counter()
-partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Test_images/bmp/4.1.01.bmp","ABCD",column,"propen_image")
+partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Test_images/bmp/4.2.06.bmp","ABCD",column,"BMP-Enc-4.2.06")
 toc = time.perf_counter()
 print(f"Finished encryption in {toc - tic:0.4f} seconds")

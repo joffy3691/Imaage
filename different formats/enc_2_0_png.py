@@ -35,12 +35,14 @@ def partialencrypt(image, key, column,imagelocation):
     size = my_img.size
     row, col = my_img.size[0], my_img.size[1]
     mod = min(size)
-
+    print(mod)
     #PBKDF2
     enc_key = key
     salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
     passwd = enc_key.encode("utf8")
     key = pbkdf2_hmac("sha256", passwd, salt, 50, 2048)
+    print("Derived key:", key)
+    print("Derived key:", binascii.hexlify(key))
     #print("Derived key:", binascii.hexlify(key))
     key = binascii.hexlify(key)
     key = str(key, 'UTF-8')
@@ -51,19 +53,25 @@ def partialencrypt(image, key, column,imagelocation):
     key_arra = []
     for key in key:
         key_arra.append(ord(key) % mod)
+        print(ord(key) % mod," ",end="")
     for i in range(len(key_arra) - 5):
         # adding the alternate numbers
         sum = key_arra[i] + key_arra[i + 1] + key_arra[i + 2] + key_arra[i + 3] + key_arra[i + 4] + key_arra[i + 5]
+        print(key_arra[i],key_arra[i + 1],key_arra[i + 2] ,key_arra[i + 3] ,key_arra[i + 4] ,key_arra[i + 5])
         key_array.append(sum % mod)
+        # print(key_array[i])
     #print(key_array)
     res = []
     # for i in key_array:
     #    if i not in res:
     #        res.append(i)
 
+    plt.imshow(my_img)
+    plt.show()
 
     #CBC
     total_size = col * row
+    print("total ",total_size,row,col)
     all_pixels = []
     random_ordering = []
     for i in range(0, total_size):
@@ -108,7 +116,7 @@ def partialencrypt(image, key, column,imagelocation):
     plt.show()
     #plt.imshow(my_img)
     #plt.show()
-
+    print("1" + str(pix[row - 1, col - 1]))
     #plt.imshow(my_img)
     #plt.show()
 
@@ -167,7 +175,7 @@ def partialencrypt(image, key, column,imagelocation):
             # C1 = pow(r, E, N)
             # C2 = pow(g, E, N)
             # C3 = pow(b, E, N)
-            column.append((C1, C2, C3))
+            # column.append((C1, C2, C3))
             # userdata=userdata+str(C1)+","+str(C2)+","+str(C3)+","
             C1 = C1 % 256
             C2 = C2 % 256
@@ -178,7 +186,7 @@ def partialencrypt(image, key, column,imagelocation):
 
     df = pd.DataFrame(column, columns=['C1', 'C2', 'C3'])
     df.to_parquet(f'{imagelocation}.png.parquet.gzip', compression='gzip')
-
+    print("3" + str(pix[row - 1, col - 1]))
     # SCRAMBLING
     enc = [[0 for x in range(col)] for y in range(row)]
     for i in range(row):
@@ -207,7 +215,7 @@ def partialencrypt(image, key, column,imagelocation):
             pix[i, j] = (enc[i][j][0], enc[i][j][1], enc[i][j][2])
 
     my_img.save(f'{imagelocation}.png')
-
+    print("3" + str(pix[row - 1, col - 1]))
     #print("Encryption completed")
 
 
@@ -234,6 +242,6 @@ column = []
 column.append((0, 0, 0))
 column.append((0, 0, 0))
 tic = time.perf_counter()
-partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Enc images/JPG_8bit/dec_image_jpg_8bit_2.jpg","ABCD",column,"propenc_image")
+partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Enc images/JPG_8bit/dec_image_jpg_8bit_2.jpg","ABCD",column,"enc_image_jpg_8bit_2")
 toc = time.perf_counter()
 print(f"Finished encryption in {toc - tic:0.4f} seconds")

@@ -127,7 +127,7 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     rgb = set()
     for i in range(row):
         for j in range(col):
-            r, g, b = array[i][j]
+            r, g, b = pix[i,j]
             M1 = rsa_hashing1.get(rsa_key_position1.get(r))
             M2 = rsa_hashing1.get(rsa_key_position1.get(g))
             M3 = rsa_hashing1.get(rsa_key_position1.get(b))
@@ -201,7 +201,7 @@ def decryption(imagelocation,key, rsa_key, public_key):
     cv2.imwrite(imagelocation, im)
     #print("decryption over")
 
-loc="propenc_image.jpg"
+loc="a.jpg"
 tic = time.perf_counter()
 partialdecrypt(loc, "ABCD", 103423571699, 568831160419,loc)
 toc = time.perf_counter()

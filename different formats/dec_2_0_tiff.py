@@ -33,13 +33,13 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     mod = min(size)
     row, col = my_img.size[0], my_img.size[1]
 
-    data = pd.read_parquet(f'{imagelocation}.parquet.gzip')
+    data = pd.read_parquet(f'{image}.parquet.gzip')
     array = data.to_numpy()
     array1 = array[2:88]
     array1 = array1.flatten()
     array1 = array1[:-2].tolist()
-    array = array[88:]
-    array = array.reshape(row, col, 3)
+    # array = array[88:]
+    # array = array.reshape(row, col, 3)
     # PBKDF2
     enc_key = key
     salt = binascii.unhexlify('aaef2d3f4d77ac66e9c5a6c3d8f921d1')
@@ -127,14 +127,14 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
     rgb = set()
     for i in range(row):
         for j in range(col):
-            r, g, b = array[i][j]
+            r, g, b = pix[i,j]
             M1 = rsa_hashing1.get(rsa_key_position1.get(r))
             M2 = rsa_hashing1.get(rsa_key_position1.get(g))
             M3 = rsa_hashing1.get(rsa_key_position1.get(b))
             pix[i, j] = (M1 % 256, M2 % 256, M3 % 256)
 
-    plt.imshow(my_img)
-    plt.show()
+    # plt.imshow(my_img)
+    # plt.show()
 
 
     #CBC
@@ -150,8 +150,8 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
         # print(random_ordering[i])
         all_pixels.pop(pos)
 
-    print(len(random_ordering), " ", total_size)
-    print(random_ordering)
+    # print(len(random_ordering), " ", total_size)
+    # print(random_ordering)
     for i in range(total_size-1,-1,-1):
         if(i==0):
             pos = random_ordering[0]
@@ -178,11 +178,11 @@ def partialdecrypt(image, key, rsa_key, public_key,imagelocation):
             greens = pix[q, r][1] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
             blues = pix[q, r][2] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
             pix[q, r] = (reds, greens, blues)
-    plt.imshow(my_img)
-    plt.show()
+    # plt.imshow(my_img)
+    # plt.show()
 
+    my_img.save(f'{imagelocation}.tiff')
 
-    my_img.save("dec_image.tiff")
 def decryption(imagelocation,key, rsa_key, public_key):
     im = cv2.imread(imagelocation)
     data = pd.read_parquet(f'{imagelocation}.parquet.gzip')
@@ -201,8 +201,9 @@ def decryption(imagelocation,key, rsa_key, public_key):
     cv2.imwrite(imagelocation, im)
     #print("decryption over")
 
-loc="propenc_image.tiff"
+loc="TIF-Enc-4.2.06.tiff"
+img_loc="TIF-Dec-4.2.06.tiff"
 tic = time.perf_counter()
-partialdecrypt(loc, "ABCD", 103423571699, 568831160419,loc)
+partialdecrypt(loc, "ABCD", 103423571699, 568831160419,img_loc)
 toc = time.perf_counter()
-print(f"Finished encryption in {toc - tic:0.4f} seconds")
+print(f"Finished decryption in {toc - tic:0.4f} seconds")

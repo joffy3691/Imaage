@@ -75,8 +75,8 @@ def partialencrypt(image, key, column,imagelocation):
         # print(random_ordering[i])
         all_pixels.pop(pos)
 
-    print(len(random_ordering), " ", total_size)
-    print(random_ordering)
+    # print(len(random_ordering), " ", total_size)
+    # print(random_ordering)
     for i in range(0, total_size):
         if (i == 0):
             pos = random_ordering[0]
@@ -104,8 +104,8 @@ def partialencrypt(image, key, column,imagelocation):
             greens = pix[q, r][1] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
             blues = pix[q, r][2] ^ (key_array[q * r % len(key_array)] ** 2 % 255)
             pix[q, r] = (reds, greens, blues)
-    plt.imshow(my_img)
-    plt.show()
+    # plt.imshow(my_img)
+    # plt.show()
     #plt.imshow(my_img)
     #plt.show()
 
@@ -167,14 +167,14 @@ def partialencrypt(image, key, column,imagelocation):
             # C1 = pow(r, E, N)
             # C2 = pow(g, E, N)
             # C3 = pow(b, E, N)
-            column.append((C1, C2, C3))
+            # column.append((C1, C2, C3))
             # userdata=userdata+str(C1)+","+str(C2)+","+str(C3)+","
             C1 = C1 % 256
             C2 = C2 % 256
             C3 = C3 % 256
             pix[i, j] = (C1, C2, C3)
 
-    plt.imshow(my_img)
+    # plt.imshow(my_img)
 
     df = pd.DataFrame(column, columns=['C1', 'C2', 'C3'])
     df.to_parquet(f'{imagelocation}.tiff.parquet.gzip', compression='gzip')
@@ -234,6 +234,6 @@ column = []
 column.append((0, 0, 0))
 column.append((0, 0, 0))
 tic = time.perf_counter()
-partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Test_images/tiff/4.1.01.tiff","ABCD",column,"propenc_image")
+partialencrypt("C:/Users/vishn/PycharmProjects/imo/dtjdtg/Test_images/tiff/4.2.06.tiff","ABCD",column,"TIF-Enc-4.2.06")
 toc = time.perf_counter()
 print(f"Finished encryption in {toc - tic:0.4f} seconds")
