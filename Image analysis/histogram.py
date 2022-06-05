@@ -101,7 +101,7 @@
 # rgbhistogram('C:/Users/DELL/Downloads/Imaage/Image-Encryption-and-Authentication/Pratyush.png','ab')
 from skimage import io
 import matplotlib.pyplot as plt
-def histo_ski(loc):
+def histo_ski(loc,output):
     image = io.imread(loc)
     # image = io.imread('C:/Users/DELL/Downloads/Imaage/Image-Encryption-and-Authentication/Pratyush.png')
     _ = plt.hist(image.ravel(), bins = 256, color = 'yellow', )
@@ -111,13 +111,16 @@ def histo_ski(loc):
     _ = plt.xlabel('Intensity Value')
     _ = plt.ylabel('Count')
     _ = plt.legend(['Total', 'Red_Channel', 'Green_Channel', 'Blue_Channel'])
-    plt.show()
+    plt.savefig(output + ".png")
+    plt.clf()
+    # plt.show()
+
 
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
 
-def histo_normal(loc):
+def histo_normal(loc,output):
     img = cv2.imread(loc, -1)
     # cv2.imshow('Lena',img)
 
@@ -127,7 +130,9 @@ def histo_normal(loc):
         plt.plot(histr,color = col)
         plt.xlim([0,256])
     plt.title('Histogram for color scale picture')
-    plt.show()
+    plt.savefig(output + ".png")
+    plt.clf()
+    # plt.show()
 
 # while True:
 #     k = cv2.waitKey(0) & 0xFF

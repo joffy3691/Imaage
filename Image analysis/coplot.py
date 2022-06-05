@@ -41,7 +41,7 @@ def coplot_horizontal(loc,output):
     plt.ylabel('Pixel value on location(x+1,y)')
     plt.title("Horizontal correlation coefficient graph")
     plt.legend()
-    plt.savefig(output+".png")
+    #plt.savefig(output+".png")
     plt.show()
 
 #plt.savefig("fog.png")
@@ -75,5 +75,5 @@ def coplot_vertical(loc,output):
     plt.ylabel('Pixel value on location(x+1,y)')
     plt.title("Vertical correlation coefficient graph")
     plt.legend()
-    plt.savefig(output + ".png")
+    #plt.savefig(output + ".png")
     plt.show()
