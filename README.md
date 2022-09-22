@@ -7,10 +7,11 @@ Security is a very important concern in the 20th century. Pictures and multimedi
 ![copy](https://user-images.githubusercontent.com/70327869/191742990-83d4f025-57e0-430d-8deb-80e15a07001f.png)
 
 **Encryption Process**
-![image](https://user-images.githubusercontent.com/70327869/191743085-4c008b6a-bf2b-4d34-81b6-000778f2e352.png)
+![image](https://user-images.githubusercontent.com/70327869/191743305-025c875f-c0e7-4115-9afb-a882fd5dc9b0.png)
 
 **Decryption Process**
-![image](https://user-images.githubusercontent.com/70327869/191743305-025c875f-c0e7-4115-9afb-a882fd5dc9b0.png)
+![image](https://user-images.githubusercontent.com/70327869/191743085-4c008b6a-bf2b-4d34-81b6-000778f2e352.png)
+
 
 
 
