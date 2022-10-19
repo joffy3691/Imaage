@@ -14,7 +14,7 @@ Security is a very important concern in the 20th century. Pictures and multimedi
 
 **Research Document**
 
-[Google Drive Link:](https://drive.google.com/file/d/1h4FNgdLeLb8wvXNZgySyOt7Q733jfUGJ/view?usp=sharing)
+[Google Drive Link](https://drive.google.com/file/d/1h4FNgdLeLb8wvXNZgySyOt7Q733jfUGJ/view?usp=sharing)
 
 
 
