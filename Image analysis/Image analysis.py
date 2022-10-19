@@ -17,16 +17,16 @@ from uaci import rootmeansquareerror,uaci
 from uaci2 import uaci2
 from psnr import RMSE
 
-Dec_image="C:/Users/vishn/PycharmProjects/imo/dtjdtg/TESTING/CBC BMP/DEC/CBC-BMP-Dec-4.1.01.bmp.bmp" #change 1
-Enc_image="C:/Users/vishn/PycharmProjects/imo/dtjdtg/TESTING/CBC BMP/ENC/CBC-BMP-Enc-4.1.01.bmp" #change 2
+Dec_image="C:/Users/vishn/PycharmProjects/imo/dtjdtg/NEW TESTING/Proposed TIFF ENC/DEC/TIF-Dec-4.2.06.tiff.tiff" #change 1
+Enc_image="C:/Users/vishn/PycharmProjects/imo/dtjdtg/NEW TESTING/Proposed TIFF ENC/ENC/TIF-Enc-4.2.06.tiff" #change 2
 
-dec_store_loc="CBC-BMP-Dec-4.1.01" #change 3
-enc_store_loc="CBC-BMP-Enc-4.1.01" #change 4
+dec_store_loc="TIFF-Dec-4.2.06" #change 3
+enc_store_loc="TIFF-Enc-4.2.06" #change 4
 
 #no more changes
 
 print("RMSE 1:" + str(rootmeansquareerror(Dec_image,Enc_image)))
-print("RMSE 2:"+RMSE(Dec_image,Enc_image))
+RMSE(Dec_image,Enc_image)
 print("NPCR :"+str(npcrv(Dec_image,Enc_image)))
 # print("UCAI :" + str(uaci(Dec_image,Enc_image)))
 
